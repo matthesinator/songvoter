@@ -62,8 +62,13 @@ exports.importJSONFile = function (filepath) {
 };
 
 exports.exportJSONFile = function (filepath, json) {
-    let data = JSON.stringify(json, null, 2);
+    let data = JSON.stringify(json, null, 2),
+        dirname = filepath.substring(0, filepath.lastIndexOf('/'));
+
     try {
+        if (!fs.existsSync(dirname)){
+            fs.mkdirSync(dirname);
+        }
         fs.writeFile(filepath, data, "utf8", (err) => {
             console.log("Songs couldn't be saved 2");
             console.log(err)
