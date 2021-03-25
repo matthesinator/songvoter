@@ -1,0 +1,133 @@
+@media (prefers-color-scheme: dark) {
+    :root {
+        --main-fg: #eee;
+        --main-bg: #121212;
+        --main-acc: rgb(184, 111, 1);
+        --main-black: #0e0d0d;
+        --sec-acc: #2c1b00;
+        --off: rgb(70, 70, 70);
+    }
+}
+
+@media (prefers-color-scheme: light) {
+    :root {
+        --main-fg: black;
+        --main-bg: white;
+        --main-acc: orange;
+        --main-black: #0e0d0d;
+        --sec-acc: #ffcc7b;
+        --off: rgb(201, 201, 201);
+    }
+}
+
+.selected {
+    color: var(--main-fg) !important;
+    background-color: var(--main-acc) !important;
+}
+
+.off {
+    color: var(--off) !important;
+    background-color: var(--main-bg) !important;
+}
+
+.success {
+    color: green !important;
+    background-color: var(--main-bg) !important;
+}
+
+.failure {
+    color: red !important;
+    background-color: var(--main-bg) !important;
+}
+
+.hidden {
+    display: none !important;
+}
+
+body {
+    color: var(--main-fg);
+    background-color: var(--main-bg);
+    padding: 50px;
+    padding-top: 0;
+    padding-bottom: 0;
+    font: 15px "Lucida Grande", Helvetica, Arial, sans-serif;
+}
+
+button, input[type=submit] {
+    background-color: var(--sec-acc);
+    color: var(--main-fg);
+    border: 1px solid var(--main-acc);
+    border-radius: 2px;
+    height: 2em;
+    cursor: pointer;
+}
+
+input[type=text] {
+    background-color: var(--main-bg);
+    color: var(--main-fg);
+    padding: 0.5ex;
+    border: 1px solid var(--main-acc);
+}
+
+a {
+    color: var(--main-acc);
+    background-color: var(--main-bg);
+    text-decoration: none;
+    font-size: 2em;
+    position: absolute;
+    top: 5px;
+    left: 5px;
+}
+
+table {
+    overflow-y: scroll;
+    border: 2px solid var(--main-acc);
+    user-select: none;
+    border-collapse: collapse;
+}
+
+table > thead {
+    border: 2px solid var(--main-acc);
+    user-select: none;
+    background-color: var(--sec-acc);
+    color: var(--main-fg);
+    text-align: center;
+}
+table > thead > tr > td {
+    border: 2px solid var(--main-acc);
+}
+
+.tdNumber {
+    border-right: 1px solid black;
+    border-bottom: 1px solid black;
+    text-align: right;
+    padding-right: 5px;
+    min-width: 4.5ex;
+}
+
+.tdName, .tdUser {
+    padding-left: 10px;
+    cursor: pointer;
+    width: 100%;
+}
+
+.tdUser {
+    text-align: right;
+}
+
+.tdTime {
+    min-width: 9ex;
+    text-align: center;
+}
+
+tr {
+    width: 100%;
+}
+
+hr.line {
+    border: 1px solid var(--main-black);
+}
+
+hr.spacer {
+    border: 1em solid var(--main-bg);
+}

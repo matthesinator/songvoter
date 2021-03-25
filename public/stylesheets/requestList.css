@@ -1,0 +1,15 @@
+#requestList {
+    position: relative;
+}
+
+#songPlayedBtn {
+    position: absolute;
+    right: 0;
+    top: 0;
+}
+
+#requestTable, #requestTable > tbody {
+    display: block;
+    max-height: var(--requestTableHeight);
+    min-height: var(--requestTableHeight);
+}

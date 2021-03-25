@@ -1,0 +1,52 @@
+<!--TODO:
+    * add singular songs
+-->
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Songvoter</title>
+    <link rel='stylesheet' href='/stylesheets/style.css'/>
+    <link rel='stylesheet' href='/stylesheets/settings.css'/>
+    <script src="/javascripts/index.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"
+            integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4="
+            crossorigin="anonymous"></script>
+    <script src="/javascripts/settings.js"></script>
+</head>
+    <body>
+        <h3>Admin settings</h3>
+        <hr>
+        <h4>Upload playlists from .csv files</h4>
+        <p>Select up to five .csv files containing track number and name. Enter a name for each file which will then be
+            used as playlist name.</p>
+        <form id="fileUploadForm" action="/admin/uploadcsvplaylist" enctype="multipart/form-data" method="post">
+            <input id="file-input" type="file" name="playlists" multiple value="Select .csv files">
+            <br><br>
+            <table id="filesTable">
+                <thead>
+                <tr><td>File name</td><td>Playlist name</td></tr>
+                </thead>
+                <tbody></tbody>
+            </table>
+            <br>
+            <input id="submitBtn" type="submit" value="Upload">
+        </form>
+        <hr>
+        <h4>Store current playlists for later use</h4>
+        <p>This resets the 'requested' and 'played' status for all songs</p>
+        <button id="writeBtn">Write playlists to file</button>
+        <hr>
+        <h4>Read previously stored songs</h4>
+        <p>This replaces the current songs (if there are any) with the songs previously stored on the server.</p>
+        <button id="readBtn">Read previous playlists from file</button>
+        <hr>
+        <h4>Delete stored songs</h4>
+        <p>This deletes the currently saved songs (if there are any).</p>
+        <button id="deleteBtn">Delete saved songs.</button>
+        <p id="warning"></p>
+        <br>
+        <p id="result"></p>
+        <a href="/admin">←</a>
+    </body>
+</html>

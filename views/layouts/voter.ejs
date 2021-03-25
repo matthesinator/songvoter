@@ -1,0 +1,32 @@
+<link rel='stylesheet' href='/stylesheets/voter.css'/>
+<script src="/javascripts/voter.js"></script>
+<div id='voter'>
+    <h3>Zelect your tracks!</h3>
+    <div id='namewrapper'>
+        <input id='userName' type="text" placeholder="Your name here (voluntary)"><br>
+        <button onclick='setUserName()'>Save</button>
+    </div>
+    <div class='songwrapper'>
+        <% for (let playlist in playlists) { %>
+            <button class='playlist_btn' id='select#<%= playlist %>'
+                onclick='zelectPlaylist("<%= playlist %>", this)'>
+                <%= playlist %>
+            </button>
+        <% } %>
+        <br><br>
+        <% for (let playlist in playlists) {%>
+            <table class='songsTable' id='<%= "table#" + playlist %>'>
+                <% playlists[playlist].songs.forEach(function (song) { %>
+                    <tr class="<%= song.requested ? ' off' : "" %>" id="vote_<%= song.uniqueId %>"
+                        onclick='zelectSong("<%= song.uniqueId %>", this)'>
+                        <td class='tdNumber'><%= song.id %></td>
+                        <td class='tdName'><%= song.name %></td>
+                    </tr>
+                <% }); %>
+            </table>
+        <% } %>
+        <br>
+        <p id='statusText'></p>
+        <button id='sendBtn' onclick="sendRequest()">Request zelected song</button>
+    </div>
+</div>

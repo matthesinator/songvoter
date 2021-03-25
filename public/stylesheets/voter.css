@@ -1,0 +1,44 @@
+
+#voter {
+    position: relative;
+}
+
+#namewrapper {
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 25%;
+}
+
+#namewrapper > input {
+    float: right;
+    width: 100%;
+}
+
+#namewrapper > button {
+    margin-top: 5px;
+    float: right;
+
+}
+
+.playlist_btn {
+    background-color: var(--main-bg);
+    border: none;
+    border-right: 2px solid var(--main-fg);
+    color: var(--main-fg);
+    font-size: 20px;
+    height: 1.5em;
+    cursor: pointer;
+}
+
+.songsTable {
+    display: none;
+    max-height: var(--voterTableHeight);
+    min-height: var(--voterTableHeight);
+}
+
+#statusText {
+    position: absolute;
+    bottom: -10px;
+    right: 0;
+}

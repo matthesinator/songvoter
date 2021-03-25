@@ -1,0 +1,25 @@
+{
+    "env": {
+        "browser": true,
+        "es2021": true,
+        "node": true
+    },
+    "extends": "eslint:recommended",
+    "parserOptions": {
+        "ecmaVersion": 12,
+        "sourceType": "module"
+    },
+    "globals": {
+        "globalController": "writable",
+        "globalWhitelist": "writable",
+        "$": "readonly"
+    },
+    "ignorePatterns": [
+        "jquery-3.6.0.js",
+        "jquery-3.6.0.min.js"
+    ],
+    "rules": {
+        "indent": ["warn", 4],
+        "no-unused-vars": "off"
+    }
+}
