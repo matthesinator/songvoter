@@ -11,7 +11,7 @@ document.addEventListener('DOMContentLoaded', function () {
  * @param callback Function to call when a connection has been established
  */
 function connectWebsocket (retry, callback) {
-    ws = new WebSocket(`ws://${window.location.hostname}:3001`)
+    ws = new WebSocket(location.origin.replace(/^http/, 'ws'))
 
     ws.onerror = () => {
         if (!retry) {

@@ -8,8 +8,7 @@ let createError = require('http-errors'),
 global.globalController = require('./tools/controller');
 global.globalPasskey = 'z3l3ct3r';
 
-let wss = require('./tools/websocket'),
-    adminRouter = require('./routes/admin'),
+let adminRouter = require('./routes/admin'),
     viewersRouter = require('./routes/viewers'),
     app = express();
 
