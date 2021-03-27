@@ -21,22 +21,30 @@ function connectWebsocket (retry, callback) {
         }
     };
 
-    ws.onmessage = (event) => {
+    ws.onmessage = (response) => {
         let data;
         try {
-            data = JSON.parse(event.data);
+            data = JSON.parse(response.data);
         } catch (SyntaxError) {
-            data = event.data;
+            data = response.data;
         }
 
         if (data.request) {
             addRequestInTable(data.request, data.uniqueId);
         } else if (data.playedSong) {
             markPlayedInTable(data.playedSong, data.uniqueId);
+        } else if (data.unauthorized) {
+            localStorage['passkey'] = prompt("Enter correct passkey to continue.");
+            ws.send('passkey:' + localStorage['passkey']);
+            ws.send(data.initialRequest);
         }
     }
 
     ws.onopen = () => {
+        if (window.location.pathname.includes('admin')) {
+            localStorage['passkey'] = localStorage['passkey'] || prompt("Enter passkey");
+            ws.send(`passkey:${localStorage['passkey']}`);
+        }
         if (callback) {
             callback();
         }

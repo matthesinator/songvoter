@@ -14,7 +14,6 @@ function handleMessage(message) {
     default:
         return 'did nothing';
     }
-
 }
 
 wss.on('connection', function (ws, req) {
@@ -22,8 +21,15 @@ wss.on('connection', function (ws, req) {
     globalController.addViewer(ws);
 
     ws.on('message', function (message) {
-        if (!req.socket.remoteAddress.includes('127.0.0.1')) {
-            ws.send('only accessible from host machine');
+        if (message.startsWith('passkey')) {
+            ws.authorized = message.split(':')[1] === globalPasskey;
+            return;
+        }
+        if (!ws.authorized) {
+            ws.send(JSON.stringify({
+                unauthorized: true,
+                initialRequest: message
+            }));
             return;
         }
         ws.send(handleMessage(message));

@@ -1,9 +1,6 @@
 /* global connectWebsocket, ws */
 let selectedRequestRow, selectedRequestSong;
 
-$('document').ready(() => {
-    localStorage['passkey'] = localStorage['passkey'] || prompt("Enter passkey");
-});
 /**
  * Select or deselect the table row the user clicked on. Deselect every other row.
  *
@@ -37,7 +34,7 @@ function markPlayedOnServer() {
     selectedRequestSong = undefined;
 
     if (ws) {
-        ws.send('played:' + id);
+        ws.send(`played:${id}`);
     } else {
         connectWebsocket(false, (createdWs) => {
             createdWs.send('played:' + id);
