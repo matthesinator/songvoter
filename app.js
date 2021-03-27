@@ -6,7 +6,7 @@ let createError = require('http-errors'),
     favicon = require('serve-favicon');
 
 global.globalController = require('./tools/controller');
-global.globalWhitelist = ["::ffff:127.0.0.1"];
+global.globalPasskey = 'z3l3ct3r';
 
 let wss = require('./tools/websocket'),
     adminRouter = require('./routes/admin'),

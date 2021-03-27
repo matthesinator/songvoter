@@ -49,6 +49,10 @@ $(document).ready(function () {
         sendRequest("/admin/readsavedsongs");
     });
 
+    $('#setPasskeyBtn').click(() => {
+        localStorage['passkey'] = prompt("Enter passkey");
+    });
+
     let deleteButton = $('#deleteBtn');
     function clickDelete() {
         $('#warning').text("This will delete all locally stored songs. Click again to continue");
@@ -99,6 +103,9 @@ $(document).ready(function () {
 function sendRequest (url, additionalParams) {
     let ajaxSettings = Object.assign({
         type: "POST",
+        headers: {
+            'auth': localStorage['passkey']
+        },
         url: url,
         success: (data) => {
             showResult(data, true);

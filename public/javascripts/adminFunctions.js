@@ -1,6 +1,9 @@
 /* global connectWebsocket, ws */
 let selectedRequestRow, selectedRequestSong;
 
+$('document').ready(() => {
+    localStorage['passkey'] = localStorage['passkey'] || prompt("Enter passkey");
+});
 /**
  * Select or deselect the table row the user clicked on. Deselect every other row.
  *

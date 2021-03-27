@@ -9,10 +9,6 @@ let multer = require('multer'),
  * Get the admin page. Sends <code>isAdmin: true</code> so that admin controls are rendered.
  */
 router.get('/', function(req, res) {
-    if (!checkRequestSource(req, res)) {
-        return;
-    }
-
     let requestedOrPlayedSongs = globalController.getRequestedSongs().concat(globalController.getPlayedSongs());
 
     res.render('admin', {
@@ -26,9 +22,6 @@ router.get('/', function(req, res) {
  * Get the settings.
  */
 router.get('/settings', function (req, res) {
-    if (!checkRequestSource(req, res)) {
-        return;
-    }
 
     res.render('settings');
 });
@@ -37,14 +30,14 @@ router.get('/settings', function (req, res) {
  * Post and process new settings. The settings object may be partial, then only affected settings will be changed.
  */
 router.post('/settings', function (req, res) {
-    if (!checkRequestSource(req, res)) {
-
+    if (!checkAuthorization(req, res)) {
+        return;
     }
 });
 
 
 router.post('/uploadcsvplaylist', upload.array('playlists', 5), function (req, res) {
-    if (!checkRequestSource(req, res)) {
+    if (!checkAuthorization(req, res)) {
         return;
     }
 
@@ -63,7 +56,7 @@ router.post('/uploadcsvplaylist', upload.array('playlists', 5), function (req, r
 });
 
 router.post('/savecurrentsongs', function (req, res) {
-    if (!checkRequestSource(req, res)) {
+    if (!checkAuthorization(req, res)) {
         return;
     }
 
@@ -75,7 +68,7 @@ router.post('/savecurrentsongs', function (req, res) {
 });
 
 router.post('/readsavedsongs', function (req, res) {
-    if (!checkRequestSource(req, res)) {
+    if (!checkAuthorization(req, res)) {
         return;
     }
 
@@ -87,7 +80,7 @@ router.post('/readsavedsongs', function (req, res) {
 });
 
 router.post('/deletesavedsongs', function (req, res) {
-    if (!checkRequestSource(req, res)) {
+    if (!checkAuthorization(req, res)) {
         return;
     }
 
@@ -106,16 +99,21 @@ router.post('/deletesavedsongs', function (req, res) {
  * @param res The response
  * @return {boolean} Whether the request is authorized
  */
-function checkRequestSource(req, res) {
-    let requestIp = req.socket.remoteAddress;
-    if (globalWhitelist.indexOf(requestIp) < 0) {
-        res.status(401).render('error', {
-            message: '401: Unauthorized',
-            error: {
-                status: 'Stop right there, criminal scum.',
-                stack: 'Pay the court a fine or serve your sentence!'
-            }
-        });
+function checkAuthorization(req, res) {
+    let authHeader = req.get('auth');
+
+    if (authHeader !== globalPasskey) {
+        if (req.method === 'GET') {
+            res.status(401).render('error', {
+                message: '401: Unauthorized',
+                error: {
+                    status: 'Stop right there, criminal scum.',
+                    stack: 'Pay the court a fine or serve your sentence!'
+                }
+            });
+        } else {
+            res.status(401).send('Passkey wrong or missing');
+        }
         return false;
     }
     return true;

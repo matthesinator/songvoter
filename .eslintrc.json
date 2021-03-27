@@ -11,7 +11,7 @@
     },
     "globals": {
         "globalController": "writable",
-        "globalWhitelist": "writable",
+        "globalPasskey": "writable",
         "$": "readonly"
     },
     "ignorePatterns": [
