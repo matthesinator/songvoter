@@ -1,4 +1,4 @@
-let ws, requestsTable;
+let ws, wsTimeout, requestsTable;
 document.addEventListener('DOMContentLoaded', function () {
     connectWebsocket();
     requestsTable = document.getElementById('requestTable');
@@ -49,6 +49,18 @@ function connectWebsocket (retry, callback) {
             callback();
         }
     }
+
+    // Check if the websocket is still connected every 10 seconds. Reconnect if necessary
+    (function setWsTimeout() {
+        clearTimeout(wsTimeout);
+        wsTimeout = setTimeout(() => {
+            if (ws.readyState !== 1) {
+                connectWebsocket();
+            } else {
+                setWsTimeout();
+            }
+        }, 10000);
+    })();
 }
 
 /**
