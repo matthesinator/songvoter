@@ -16,6 +16,10 @@ exports.importPlaylistFromCSV = function (filepath, name) {
     };
 
     reader.eachLine(filepath, function (line) {
+        if (!/^\d/.test(line)) {
+            return true;
+        }
+
         let parts = line.split(",");
         playlist.songs.push({
             id: parts[0],
@@ -41,6 +45,10 @@ exports.importPlaylistFromString = function (string, name) {
         };
 
     lines.forEach((line) => {
+        if (!/^\d/.test(line)) {
+            return;
+        }
+
         let parts = line.split(",");
         playlist.songs.push({
             id: parts[0],
