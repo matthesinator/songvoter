@@ -200,6 +200,19 @@ Controller.prototype.deleteSavedSongs = function () {
     fileManager.deleteFile(this.filePath);
 }
 
+/**
+ * Deletes the given playlist(s).
+ *
+ * @param playlists The playlist names to delete
+ */
+Controller.prototype.deletePlaylists = function (playlists) {
+    playlists = Array.isArray(playlists) ? playlists : [playlists];
+
+    playlists.forEach((playlist) => {
+        delete this.songs[playlist];
+    });
+};
+
 let controller = new Controller();
 
 module.exports = controller;

@@ -22,3 +22,7 @@
     top: 5px;
     right: 5px;
 }
+
+#playlistSelection td {
+    min-width: 10vw;
+}

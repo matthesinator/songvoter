@@ -41,6 +41,16 @@
         <p>This replaces the current songs (if there are any) with the songs previously stored on the server.</p>
         <button id="readBtn">Read previous playlists from file</button>
         <hr>
+        <h4>Delete playlists</h4>
+        <p>This deletes the selected playlists.</p>
+        <table id="playlistSelection">
+            <% for (let playlist of playlists) { %>
+                <tr id="delTr_<%= playlist %>" onclick="markForDelete(this)"><td><%= playlist %></td></tr>
+            <% } %>
+        </table>
+        <br>
+        <button id="deletePlaylistBtn">Delete selected.</button>
+        <hr>
         <h4>Delete stored songs</h4>
         <p>This deletes the currently saved songs (if there are any).</p>
         <button id="deleteBtn">Delete saved songs.</button>

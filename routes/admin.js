@@ -23,7 +23,7 @@ router.get('/', function(req, res) {
  */
 router.get('/settings', function (req, res) {
 
-    res.render('settings');
+    res.render('settings', { playlists: Object.keys(globalController.getSongs()) });
 });
 
 /**
@@ -36,7 +36,7 @@ router.post('/settings', function (req, res) {
 });
 
 
-router.post('/uploadcsvplaylist', upload.array('playlists', 5), function (req, res) {
+router.post('/uploadcsvplaylist', upload.array('playlists', 10), function (req, res) {
     if (!checkAuthorization(req, res)) {
         return;
     }
@@ -53,6 +53,17 @@ router.post('/uploadcsvplaylist', upload.array('playlists', 5), function (req, r
     });
 
     res.send('file(s) added');
+});
+
+router.post('/deleteplaylists', function (req, res) {
+    if (!checkAuthorization(req, res)) {
+        return;
+    }
+    if (!req.body.playlists) {
+        return res.status(400).send('No playlists supplied');
+    }
+    globalController.deletePlaylists(JSON.parse(req.body.playlists))
+    res.send('playlists deleted');
 });
 
 router.post('/savecurrentsongs', function (req, res) {

@@ -1,4 +1,4 @@
-let resultTimer;
+let resultTimer, playlistsMarked = [];
 
 $(document).ready(function () {
     $("#submitBtn").click(function (event) {
@@ -43,6 +43,21 @@ $(document).ready(function () {
 
     $('#writeBtn').click(() => {
         sendRequest("/admin/savecurrentsongs");
+    });
+
+    $('#deletePlaylistBtn').click(() => {
+        sendRequest("/admin/deleteplaylists", {
+            data: {
+                playlists: JSON.stringify(playlistsMarked.map((playlist) => {
+                    return playlist.id.split('_')[1]
+                }))
+            },
+            enctype: 'application/json'
+        }, () => {
+            playlistsMarked.forEach((tr) => {
+                tr.remove()
+            });
+        });
     });
 
     $('#readBtn').click(() => {
@@ -94,13 +109,25 @@ $(document).ready(function () {
     });
 });
 
+function markForDelete(tableRow) {
+    let index = playlistsMarked.indexOf(tableRow)
+    if (index >= 0) {
+        playlistsMarked.splice(index, 1);
+        tableRow.classList.remove('selected');
+    } else {
+        playlistsMarked.push(tableRow)
+        tableRow.classList.add('selected');
+    }
+}
+
 /**
  * Sends a POST request to the given URL. Additional parameters like Content-Type or data can be passed in an object.
  *
  * @param url The URL to POST to
  * @param additionalParams An object of additional parameters, the request object will be enhanced using Object.assign()
+ * @param successCallback An optional callback which will be called on success
  */
-function sendRequest (url, additionalParams) {
+function sendRequest (url, additionalParams, successCallback) {
     let ajaxSettings = Object.assign({
         type: "POST",
         headers: {
@@ -109,6 +136,9 @@ function sendRequest (url, additionalParams) {
         url: url,
         success: (data) => {
             showResult(data, true);
+            if (successCallback) {
+                successCallback();
+            }
         },
         error: (err) => {
             console.log("ERROR : ", err);
