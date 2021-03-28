@@ -8,6 +8,7 @@ let fileManager = require('./filemanager');
  * @constructor
  */
 function Controller() {
+    this.takeRequests = true;
     this.requestedSongs = new SongList();
     this.playedSongs = new SongList();
     this.songs = {};
@@ -65,7 +66,11 @@ Controller.prototype.findSong = function (uniqueId) {
  */
 Controller.prototype.requestSong = function (uniqueId, userName) {
     if (this.requestedSongs.has(uniqueId) || this.playedSongs.has(uniqueId)) {
-        return false;
+        throw new Error('Song already requested');
+    }
+
+    if (!this.takeRequests) {
+        throw new Error('Requests are blocked at the moment');
     }
 
     let song = this.findSong(uniqueId);
@@ -77,7 +82,15 @@ Controller.prototype.requestSong = function (uniqueId, userName) {
         request: song,
         uniqueId: uniqueId
     });
-    return true;
+};
+
+/**
+ * Set whether new requests should be taken or rejected.
+ *
+ * @param allow Whether requests should be taken or rejected
+ */
+Controller.prototype.allowRequests = function (allow) {
+    this.takeRequests = allow;
 };
 
 /**

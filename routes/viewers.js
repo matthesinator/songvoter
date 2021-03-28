@@ -17,19 +17,18 @@ router.get('/songs', function (req, res) {
 
 router.post('/songrequest', function (req, res) {
     if (!req.body.uniqueId) {
-        res.status(400).send('Playlist or ID missing');
-        return;
+        return res.status(400).send('Playlist or ID missing');
     }
 
     let uniqueId = req.body.uniqueId,
-        userName = req.body._userName || 'unknown',
-        addedToRequests = globalController.requestSong(uniqueId, userName);
+        userName = req.body._userName || 'unknown';
 
-    if (addedToRequests) {
-        res.status(200).send('Request added to list');
-    } else {
-        res.status(400).send('Song already requested');
+    try {
+        globalController.requestSong(uniqueId, userName);
+    } catch (error) {
+        return res.status(400).send(error.message);
     }
+    res.status(200).send('Request added to list');
 });
 
 module.exports = router;

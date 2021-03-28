@@ -41,3 +41,18 @@ function markPlayedOnServer() {
         });
     }
 }
+
+/**
+ * Blocks or unblocks new requests.
+ *
+ * @param button The button which was pressed
+ */
+function toggleRequests(button) {
+    if (button.classList.contains('failure')) {
+        ws.send('allowRequests:true');
+        button.classList.remove('failure');
+    } else {
+        ws.send('allowRequests:false');
+        button.classList.add('failure');
+    }
+}

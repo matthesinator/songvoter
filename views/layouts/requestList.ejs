@@ -4,7 +4,10 @@
     <h3>Requested and played tracks</h3>
     <% if (locals.isAdmin) { %>
         <script src="/javascripts/adminFunctions.js"></script>
-        <button id='songPlayedBtn' onclick='markPlayedOnServer()'>Mark song played</button>
+        <div id="requestListBtns">
+            <button id='toggleRequestsBtn' onclick='toggleRequests(this)'>Block requests</button>
+            <button id='songPlayedBtn' onclick='markPlayedOnServer()'>Mark song played</button>
+        </div>
     <% } %>
     <table id='requestTable'>
         <tbody>

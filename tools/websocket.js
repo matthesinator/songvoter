@@ -9,6 +9,9 @@ exports.createWebsocketServer = function (server) {
             argument = parts[1];
 
         switch (command) {
+        case 'allowRequests':
+            globalController.allowRequests(argument === 'true');
+            return 'done';
         case 'played':
             globalController.markSongPlayed(argument);
             return 'done';
