@@ -6,11 +6,10 @@ document.addEventListener('DOMContentLoaded', function () {
     playlistTables[0].style.display = 'block';
     selectedPlaylistButton = document.getElementsByClassName('playlist_btn')[0];
     selectedPlaylistButton.classList.add('selected');
-    userName =  document.getElementById('userName').value;
-    if (!userName) {
-        userName = localStorage['name'] || "";
-        $('#userName')[0].value = userName;
-    }
+
+    userName = localStorage['name'] ||
+        prompt('Enter your name to send with your requests. You can change it at any time');
+    $('#userName')[0].value = userName;
 
     if (window.songs) {
         selectedPlaylistName = Object.keys(window.songs)[0];
