@@ -9,6 +9,8 @@ document.addEventListener('DOMContentLoaded', function () {
 
     userName = localStorage['name'] ||
         prompt('Enter your name to send with your requests. You can change it at any time');
+
+    localStorage['name'] = userName;
     $('#userName')[0].value = userName;
 
     if (window.songs) {
