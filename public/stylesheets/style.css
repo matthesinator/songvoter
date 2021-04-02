@@ -40,6 +40,11 @@
     background-color: var(--main-bg) !important;
 }
 
+.warning {
+    color: black !important;
+    background-color: red !important;
+}
+
 .hidden {
     display: none !important;
 }
