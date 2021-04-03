@@ -1,0 +1,28 @@
+body {
+    font-size: 35px;
+    padding: 15px 35px;
+}
+
+button, input[type=submit] {
+    height: 2em;
+    font-size: 35px;
+    padding: 0 10px 0 10px;
+    max-height: 1.5em;
+}
+
+input[type=text] {
+    font-size: 35px;
+}
+
+td {
+    white-space: nowrap;
+    padding-top: 20px;
+}
+
+.tdNumber, .tdTime {
+    display: none;
+}
+
+hr.spacer {
+    display: none;
+}
