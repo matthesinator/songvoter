@@ -8,12 +8,23 @@ function SongList() {
 }
 
 /**
- * Adds a song to the queue. Songs will always be inserted at the first position.
+ * Adds a song to the queue.
  *
  * @param uniqueId The unique identifier of the song
  * @param song The song object
  */
 SongList.prototype.push = function (uniqueId, song) {
+    this.uniqueIds.push(uniqueId);
+    this.uniqueId2Song[uniqueId] = song;
+};
+
+/**
+ * Adds a song at the first position of the queue.
+ *
+ * @param uniqueId The unique identifier of the song
+ * @param song The song object
+ */
+SongList.prototype.addFirst = function (uniqueId, song) {
     this.uniqueIds.unshift(uniqueId);
     this.uniqueId2Song[uniqueId] = song;
 };

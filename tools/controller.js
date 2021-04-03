@@ -113,7 +113,7 @@ Controller.prototype.markSongPlayed = function (uniqueId) {
 
     song.played = true;
     song.playedAt = new Date().toLocaleTimeString('en-EN', {hour: '2-digit', minute:'2-digit'});
-    this.playedSongs.push(uniqueId, song);
+    this.playedSongs.addFirst(uniqueId, song);
     this.sendMessageToViewers({
         playedSong: song,
         uniqueId: uniqueId

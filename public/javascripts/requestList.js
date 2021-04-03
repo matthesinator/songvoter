@@ -92,7 +92,13 @@ function createTableRow(song, uniqueId) {
  * @param uniqueId The unique id to identify the song across playlists
  */
 function addRequestInTable(song, uniqueId) {
-    $('#requestTable > tbody').prepend(createTableRow(song, uniqueId));
+    let firstOffRow = $("#requestTable > tbody > tr.off").first();
+
+    if (!firstOffRow.length) {
+        $("#requestTable > tbody").append(createTableRow(song, uniqueId));
+    } else {
+        firstOffRow.before(createTableRow(song, uniqueId));
+    }
 
     let selectRow = $(document.getElementById(`vote_${uniqueId}`));
     if (selectRow.length) {
