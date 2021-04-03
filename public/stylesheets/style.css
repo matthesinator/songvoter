@@ -27,7 +27,7 @@
 
 .off {
     color: var(--off) !important;
-    background-color: var(--main-bg) !important;
+    background-color: var(--main-bg);
 }
 
 .success {

@@ -49,16 +49,16 @@ $(document).ready(function () {
         let data = {};
 
         if (playlistsToDelete.length) {
-            data.delete = playlistsToDelete;
+            data.deletable = JSON.stringify(playlistsToDelete);
         }
         if (playlistsBlocked) {
-            data.block = playlistsBlocked;
+            data.blockable = JSON.stringify(playlistsBlocked);
         }
         if (Object.keys(playlistsRenamed).length) {
-            data.rename = playlistsRenamed;
+            data.renameable = JSON.stringify(playlistsRenamed);
         }
 
-        sendRequest("/admin/deleteplaylists", {
+        sendRequest("/admin/changeplaylists", {
             data: data,
             enctype: 'application/json'
         }, () => {
@@ -144,9 +144,13 @@ function blockPlaylist(button) {
 
     if (index >= 0) {
         playlistsBlocked.splice(index, 1);
-        button.classList.remove('failure');
     } else {
         playlistsBlocked.push(name)
+    }
+
+    if (button.classList.contains('failure')) {
+        button.classList.remove('failure');
+    } else {
         button.classList.add('failure');
     }
 }

@@ -22,8 +22,7 @@ router.get('/', function(req, res) {
  * Get the settings.
  */
 router.get('/settings', function (req, res) {
-
-    res.render('settings', { playlists: Object.keys(globalController.getSongs()) });
+    res.render('settings', { playlists: globalController.getSongs() });
 });
 
 /**
@@ -55,15 +54,25 @@ router.post('/uploadcsvplaylist', upload.array('playlists', 10), function (req, 
     res.send('file(s) added');
 });
 
-router.post('/deleteplaylists', function (req, res) {
+router.post('/changeplaylists', function (req, res) {
     if (!checkAuthorization(req, res)) {
         return;
     }
-    if (!req.body.playlists) {
-        return res.status(400).send('No playlists supplied');
+    if (!req.body.deletable && !req.body.blockable && !req.body.renameable) {
+        return res.status(400).send('No operations requested.');
     }
-    globalController.deletePlaylists(JSON.parse(req.body.playlists))
-    res.send('playlists deleted');
+
+    if (req.body.deletable) {
+        globalController.deletePlaylists(JSON.parse(req.body.deletable));
+    }
+    if (req.body.blockable) {
+        globalController.blockPlaylists(JSON.parse(req.body.blockable));
+    }
+    if (req.body.renameable) {
+        globalController.renamePlaylists(JSON.parse(req.body.renameable));
+    }
+
+    res.send('Operations applied.');
 });
 
 router.post('/savecurrentsongs', function (req, res) {

@@ -37,6 +37,8 @@ function connectWebsocket (retry, callback) {
             localStorage['passkey'] = prompt("Enter correct passkey to continue.");
             ws.send('passkey:' + localStorage['passkey']);
             ws.send(data.initialRequest);
+        } else if (data === 'reload') {
+            location.reload();
         }
     }
 

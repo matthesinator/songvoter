@@ -8,7 +8,7 @@
     </div>
     <div class='songwrapper'>
         <% for (let playlist in playlists) { %>
-            <button class='playlist_btn' id='select#<%= playlist %>'
+            <button class='playlist_btn<%= playlists[playlist]._disabled ? ' off' : '' %>' id='select#<%= playlist %>'
                 onclick='zelectPlaylist("<%= playlist %>", this)'>
                 <%= playlist %>
             </button>
