@@ -13,6 +13,7 @@ router.get('/', function(req, res) {
 
     res.render('admin', {
         isAdmin: true,
+        mobile: ('mobile' in req.query),
         playlists: globalController.getSongs(),
         requestedOrPlayedSongs: requestedOrPlayedSongs
     });
@@ -23,7 +24,10 @@ router.get('/', function(req, res) {
  */
 router.get('/settings', function (req, res) {
 
-    res.render('settings', { playlists: Object.keys(globalController.getSongs()) });
+    res.render('settings', {
+        mobile: ('mobile' in req.query),
+        playlists: Object.keys(globalController.getSongs())
+    });
 });
 
 /**

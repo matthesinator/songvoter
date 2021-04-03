@@ -6,6 +6,7 @@ router.get('/', function(req, res) {
     let requestedOrPlayedSongs = globalController.getRequestedSongs().concat(globalController.getPlayedSongs());
 
     res.render('index', {
+        mobile: ('mobile' in req.query),
         playlists: globalController.getSongs(),
         requestedOrPlayedSongs: requestedOrPlayedSongs
     });

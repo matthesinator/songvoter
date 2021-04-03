@@ -47,20 +47,7 @@
 body {
     color: var(--main-fg);
     background-color: var(--main-bg);
-}
-
-@media screen and (min-aspect-ratio: 13/9) {
-    body {
-        font: 15px "Lucida Grande", Helvetica, Arial, sans-serif;
-        padding: 0 50px;
-    }
-}
-
-@media screen and (max-aspect-ratio: 13/9) {
-    body {
-        font: 35px "Lucida Grande", Helvetica, Arial, sans-serif;
-        padding: 15px 35px;
-    }
+    font-family: "Lucida Grande", Helvetica, Arial, sans-serif;
 }
 
 button, input[type=submit] {
@@ -76,28 +63,6 @@ input[type=text] {
     color: var(--main-fg);
     padding: 0.5ex;
     border: 1px solid var(--main-acc);
-}
-
-@media screen and (min-aspect-ratio: 13/9) {
-    button, input[type=submit] {
-        height: 2em;
-    }
-
-    input[type=text] {
-    }
-}
-
-@media screen and (max-aspect-ratio: 13/9) {
-    button, input[type=submit] {
-        height: 2em;
-        font-size: 35px;
-        padding: 0 10px 0 10px;
-        max-height: 1.5em;
-    }
-
-    input[type=text] {
-        font-size: 35px;
-    }
 }
 
 a {
@@ -155,26 +120,6 @@ tr {
     width: 100%;
 }
 
-@media screen and (max-aspect-ratio: 13/9){
-    td {
-        white-space: nowrap;
-        padding-top: 20px;
-    }
-
-    .tdNumber, .tdTime {
-        display: none;
-    }
-}
-
 hr.line {
     border: 1px solid var(--main-black);
-}
-hr.spacer {
-    border: 1em solid var(--main-bg);
-}
-
-@media screen and (max-aspect-ratio: 13/9) {
-    hr.spacer {
-        display: none;
-    }
 }

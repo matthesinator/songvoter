@@ -10,12 +10,6 @@
     width: 25%;
 }
 
-@media screen and (max-aspect-ratio: 13/9) {
-    #namewrapper {
-        width: 30%;
-    }
-}
-
 #namewrapper > input {
     float: right;
     width: 100%;

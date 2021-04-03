@@ -1,0 +1,12 @@
+body {
+    font-size: 15px;
+    padding: 0 50px;
+}
+
+button, input[type=submit] {
+    height: 2em;
+}
+
+hr.spacer {
+    border: 1em solid var(--main-bg);
+}
