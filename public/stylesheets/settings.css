@@ -24,6 +24,14 @@
     right: 5px;
 }
 
-#playlistSelection td {
-    min-width: 10vw;
+#playlistSelection td:first-of-type {
+    min-width: 10em;
+}
+
+#playlistSelection button {
+    padding: 0 5px;
+    margin-top: 1px;
+    margin-left: 5px;
+    height: 1.5em;
+    min-width: 5vw;
 }

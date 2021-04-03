@@ -74,6 +74,10 @@ Controller.prototype.requestSong = function (uniqueId, userName) {
         throw new Error('Requests are blocked at the moment');
     }
 
+    if (this.songs[uniqueId.split('.')[0]]._disabled) {
+        throw new Error('This playlist is blocked right now.');
+    }
+
     let song = this.findSong(uniqueId);
     song.requested = true;
     song.requestedBy = userName
@@ -225,6 +229,45 @@ Controller.prototype.deletePlaylists = function (playlists) {
     playlists.forEach((playlist) => {
         delete this.songs[playlist];
     });
+
+    this.requestedSongs = new SongList();
+    this.playedSongs = new SongList();
+    this.sendMessageToViewers('reload');
+};
+
+/**
+ * Disables voting for the given playlist(s).
+ *
+ * @param playlist The playlists names
+ */
+Controller.prototype.blockPlaylists = function (playlist) {
+    playlist.forEach((name) => {
+        this.songs[name]._disabled = !this.songs[name]._disabled;
+    });
+
+    this.sendMessageToViewers('reload');
+};
+
+/**
+ * Renames the given playlist(s).
+ *
+ * @param playlist The playlists and their new names
+ */
+Controller.prototype.renamePlaylists = function (oldName2newName) {
+    for (let oldName in oldName2newName) {
+        let newName = oldName2newName[oldName];
+
+        this.songs[newName] = this.songs[oldName];
+        this.songs[newName]._name = newName;
+        this.songs[newName].songs.forEach((song) => {
+            song.uniqueId = `${newName}.${song.id}`;
+        });
+        delete this.songs[oldName];
+    }
+
+    this.requestedSongs = new SongList();
+    this.playedSongs = new SongList();
+    this.sendMessageToViewers('reload');
 };
 
 let controller = new Controller();

@@ -33,15 +33,22 @@
             <input id="submitBtn" type="submit" value="Upload">
         </form>
         <hr>
-        <h4>Delete playlists</h4>
-        <p>This deletes the selected playlists.</p>
+        <h4>Manage your playlists</h4>
+        <p>Block, rename or delete playlists. <span class="failure">Warning:</span> Renaming or deleting a playlist will
+            lead to all requests resetting</p>
         <table id="playlistSelection">
-            <% for (let playlist of playlists) { %>
-                <tr id="delTr_<%= playlist %>" onclick="markForDelete(this)"><td><%= playlist %></td></tr>
+            <% for (let playlist in playlists) { %>
+                <tr id="playlistsTable_<%= playlist %>">
+                    <td><%= playlist %></td>
+                    <td><button class="<%= playlists[playlist]._disabled ? 'failure' : '' %>"
+                                onclick="blockPlaylist(this)">Block</button></td>
+                    <td><button onclick="renamePlaylist(this)">Rename</button></td>
+                    <td><button onclick="markForDelete(this)">Delete</button></td>
+                </tr>
             <% } %>
         </table>
         <br>
-        <button id="deletePlaylistBtn">Delete selected.</button>
+        <button id="confirmPlaylistChanges">Confirm changes.</button>
         <hr>
         <h4>Store current playlists for later use</h4>
         <p>This resets the 'requested' and 'played' status for all songs</p>

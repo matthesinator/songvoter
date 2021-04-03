@@ -10,6 +10,7 @@ let fs = require('fs');
  */
 exports.importPlaylistFromCSV = function (filepath, name) {
     let playlist = {
+        _disabled: false,
         _filepath: filepath,
         _name: name,
         songs: []
@@ -40,6 +41,7 @@ exports.importPlaylistFromString = function (string, name) {
     let separator = string.includes('\r\n') ? '\r\n' : '\n',
         lines = string.split(separator),
         playlist = {
+            _disabled: false,
             _name: name,
             songs: []
         };

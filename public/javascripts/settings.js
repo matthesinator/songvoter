@@ -1,4 +1,4 @@
-let resultTimer, playlistsMarked = [];
+let resultTimer, playlistsToDelete = [], playlistsBlocked = [], playlistsRenamed = {};
 
 $(document).ready(function () {
     $("#submitBtn").click(function (event) {
@@ -47,18 +47,24 @@ $(document).ready(function () {
         sendRequest("/admin/savecurrentsongs");
     });
 
-    $('#deletePlaylistBtn').click(() => {
-        sendRequest("/admin/deleteplaylists", {
-            data: {
-                playlists: JSON.stringify(playlistsMarked.map((playlist) => {
-                    return playlist.id.split('_')[1]
-                }))
-            },
+    $('#confirmPlaylistChanges').click(() => {
+        let data = {};
+
+        if (playlistsToDelete.length) {
+            data.deletable = JSON.stringify(playlistsToDelete);
+        }
+        if (playlistsBlocked) {
+            data.blockable = JSON.stringify(playlistsBlocked);
+        }
+        if (Object.keys(playlistsRenamed).length) {
+            data.renameable = JSON.stringify(playlistsRenamed);
+        }
+
+        sendRequest("/admin/changeplaylists", {
+            data: data,
             enctype: 'application/json'
         }, () => {
-            playlistsMarked.forEach((tr) => {
-                tr.remove()
-            });
+            location.reload();
         });
     });
 
@@ -111,15 +117,63 @@ $(document).ready(function () {
     });
 });
 
-function markForDelete(tableRow) {
-    let index = playlistsMarked.indexOf(tableRow)
+/**
+ * Delete the playlist.
+ *
+ * @param button The pressed button
+ */
+function markForDelete(button) {
+    let name = button.parentNode.parentNode.id.split('_')[1],
+        index = playlistsToDelete.indexOf(name);
+
     if (index >= 0) {
-        playlistsMarked.splice(index, 1);
-        tableRow.classList.remove('selected');
+        playlistsToDelete.splice(index, 1);
+        button.classList.remove('warning');
     } else {
-        playlistsMarked.push(tableRow)
-        tableRow.classList.add('selected');
+        playlistsToDelete.push(name)
+        button.classList.add('warning');
     }
+}
+
+/**
+ * Exclude the playlists from voting.
+ *
+ * @param button The pressed button
+ */
+function blockPlaylist(button) {
+    let name = button.parentNode.parentNode.id.split('_')[1],
+        index = playlistsBlocked.indexOf(name);
+
+    if (index >= 0) {
+        playlistsBlocked.splice(index, 1);
+    } else {
+        playlistsBlocked.push(name)
+    }
+
+    if (button.classList.contains('failure')) {
+        button.classList.remove('failure');
+    } else {
+        button.classList.add('failure');
+    }
+}
+
+/**
+ * Rename the playlist whose button was pressed.
+ *
+ * @param button The pressed button
+ */
+function renamePlaylist(button) {
+    let name = button.parentNode.parentNode.id.split('_')[1],
+        newName = prompt(`Enter new name for playlist ${name}: (Leave empty to reset)`);
+
+    if (!newName) {
+        delete playlistsRenamed[name];
+        button.parentNode.parentNode.children[0].innerHTML = `${name}`;
+        return
+    }
+
+    playlistsRenamed[name] = newName;
+    button.parentNode.parentNode.children[0].innerHTML = `${name} → ${newName}`;
 }
 
 /**
