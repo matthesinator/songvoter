@@ -23,7 +23,6 @@ router.get('/', function(req, res) {
  * Get the settings.
  */
 router.get('/settings', function (req, res) {
-
     res.render('settings', {
         mobile: ('mobile' in req.query),
         playlists: Object.keys(globalController.getSongs())
