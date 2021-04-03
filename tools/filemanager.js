@@ -33,7 +33,7 @@ exports.importPlaylistFromCSV = function (filepath, name) {
         });
     });
 
-    globalController.setPlaylist(name, playlist);
+    globalController.addPlaylist(name, playlist);
 };
 
 exports.importPlaylistFromString = function (string, name) {
@@ -62,7 +62,7 @@ exports.importPlaylistFromString = function (string, name) {
         });
     });
 
-    globalController.setPlaylist(name, playlist);
+    globalController.addPlaylist(name, playlist);
 }
 
 exports.importJSONFile = function (filepath) {

@@ -38,6 +38,8 @@ $(document).ready(function () {
             processData: false,
             contentType: false,
             cache: false,
+        }, () => {
+            location.reload();
         });
     });
 

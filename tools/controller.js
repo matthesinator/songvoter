@@ -23,8 +23,9 @@ function Controller() {
  * @param name The desired name
  * @param playlist The playlist object
  */
-Controller.prototype.setPlaylist = function (name, playlist) {
+Controller.prototype.addPlaylist = function (name, playlist) {
     this.songs[name] = playlist;
+    this.sendMessageToViewers('reload')
 };
 
 /**
