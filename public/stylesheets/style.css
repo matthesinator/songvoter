@@ -99,8 +99,8 @@ table > thead > tr > td {
 }
 
 .tdNumber {
-    border-right: 1px solid black;
-    border-bottom: 1px solid black;
+    border-right: 1px solid var(--main-fg);
+    border-bottom: 1px solid var(--main-fg);
     text-align: right;
     padding-right: 5px;
     min-width: 4.5ex;
@@ -108,12 +108,12 @@ table > thead > tr > td {
 
 .tdName, .tdUser {
     padding-left: 10px;
-    cursor: pointer;
     width: 100%;
 }
 
 .tdUser {
     text-align: right;
+    padding-right: 5px;
 }
 
 .tdTime {
@@ -123,6 +123,7 @@ table > thead > tr > td {
 
 tr {
     width: 100%;
+    cursor: pointer;
 }
 
 hr.line {

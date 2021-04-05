@@ -1,4 +1,51 @@
 :root {
-    --requestTableHeight: 40vh;
-    --voterTableHeight: 30vh;
+    --requestTableHeight: 70vh;
+    --voterTableHeight: 75vh;
+}
+
+.flexContainer {
+    display: flex;
+    width: 100%;
+}
+
+.flexContainer > div{
+    margin: 1%;
+    margin-left: 0;
+    min-height: calc(100% - 2%);
+    min-width: calc((100% - 3%) / 2);
+}
+
+#content {
+    height: 100%;
+}
+
+#content > div{
+    min-height: calc(100% - 2%);
+    margin: 1%;
+}
+
+#requestsDiv {
+    min-width: calc((100% - 4%) * (3/5));
+}
+
+#voterDiv {
+    min-width: calc((100% - 4%) * (2/5));
+}
+
+@media screen and (max-aspect-ratio: 13/9){
+    #voterDiv {
+        display: none;
+    }
+}
+
+#requestTable {
+    font-size: 20px;
+}
+
+#requestTable td{
+    border-bottom: 1px solid var(--main-acc);
+}
+
+#requestTable .tdName {
+    padding-top: 10px;
 }

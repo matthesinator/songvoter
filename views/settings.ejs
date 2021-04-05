@@ -42,7 +42,7 @@
                 <tr id="playlistsTable_<%= playlist %>">
                     <td><%= playlist %></td>
                     <td><button class="<%= playlists[playlist]._disabled ? 'failure' : '' %>"
-                                onclick="blockPlaylist(this)">Block</button></td>
+                                onclick="markPlaylistToBlock(this)">Block</button></td>
                     <td><button onclick="renamePlaylist(this)">Rename</button></td>
                     <td><button onclick="markForDelete(this)">Delete</button></td>
                 </tr>

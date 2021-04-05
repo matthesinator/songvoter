@@ -79,6 +79,17 @@ router.post('/changeplaylists', function (req, res) {
     res.send('Operations applied.');
 });
 
+router.post('/blockplaylist', (req, res) => {
+    if (!checkAuthorization(req, res)) {
+        return;
+    }
+    if (!req.body.playlist) {
+        return res.status(400).send('No playlist added.');
+    }
+    globalController.blockPlaylists(req.body.playlist);
+    res.send('Playlist (un)blocked.')
+});
+
 router.post('/savecurrentsongs', function (req, res) {
     if (!checkAuthorization(req, res)) {
         return;

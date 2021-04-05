@@ -2,10 +2,14 @@
     position: relative;
 }
 
-#requestListBtns {
+#songPlayedBtn {
     position: absolute;
     right: 0;
     top: 0;
+    color: var(--main-fg);
+    background-color: var(--main-acc);
+    font-size: 20px;
+    border: 1px solid var(--main-fg);
 }
 
 #requestTable, #requestTable > tbody {

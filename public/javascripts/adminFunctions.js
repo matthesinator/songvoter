@@ -56,3 +56,28 @@ function toggleRequests(button) {
         button.classList.add('failure');
     }
 }
+
+/**
+ * Sends a request to the server to block requests from the given playlist.
+ *
+ * @param playlist The name of the playlist to block
+ * @param button The pressed button
+ */
+function blockPlaylist(playlist, button) {
+    $.ajax({
+        data: { playlist: playlist },
+        type: "POST",
+        headers: { 'auth': localStorage['passkey'] },
+        url: '/admin/blockplaylist',
+        success: () => {
+            if (button.classList.contains('failure')) {
+                button.classList.remove('failure');
+            } else {
+                button.classList.add('failure');
+            }
+        },
+        error: (err) => {
+            console.log("ERROR : ", err);
+        }
+    });
+}
