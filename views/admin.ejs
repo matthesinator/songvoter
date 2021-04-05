@@ -11,10 +11,16 @@
                 crossorigin="anonymous"></script>
     </head>
     <body>
-        <%- include('layouts/requestList') %>
-        <hr class='line'>
-        <hr class='spacer'>
-        <%- include('layouts/voter') %>
+        <div id="content">
+            <div id="requestsDiv">
+                <%- include('layouts/requestList') %>
+                <h3>Quicksettings</h3>
+                <button id='toggleRequestsBtn' onclick='toggleRequests(this)'>Block requests</button>
+            </div>
+            <div id="voterDiv">
+                <%- include('layouts/voter') %>
+            </div>
+        </div>
         <a href="/admin/settings">⚙</a>
     </body>
 </html>

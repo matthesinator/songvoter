@@ -1,4 +1,41 @@
 :root {
-    --requestTableHeight: 40vh;
-    --voterTableHeight: 30vh;
+    --requestTableHeight: 70vh;
+    --voterTableHeight: 75vh;
+}
+
+#content {
+    display: flex;
+    height: 100%;
+    width: 100%;
+}
+
+#content > div{
+    min-height: calc(100% - 2 * 1%);
+    margin: 1%;
+}
+
+#requestsDiv {
+    min-width: calc((100% - 4 * 1%) * (3/5));
+}
+
+#voterDiv {
+    min-width: calc((100% - 4 * 1%) * (2/5));
+}
+
+@media screen and (max-aspect-ratio: 13/9){
+    #voterDiv {
+        display: none;
+    }
+}
+
+#requestTable {
+    font-size: 20px;
+}
+
+#requestTable td{
+    border-bottom: 1px solid var(--main-acc);
+}
+
+#requestTable .tdName {
+    padding-top: 10px;
 }

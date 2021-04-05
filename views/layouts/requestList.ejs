@@ -4,17 +4,14 @@
     <h3>Requested and played tracks</h3>
     <% if (locals.isAdmin) { %>
         <script src="/javascripts/adminFunctions.js"></script>
-        <div id="requestListBtns">
-            <button id='toggleRequestsBtn' onclick='toggleRequests(this)'>Block requests</button>
-            <button id='songPlayedBtn' onclick='markPlayedOnServer()'>Mark song played</button>
-        </div>
+        <button id='songPlayedBtn' onclick='markPlayedOnServer()'>Mark song played</button>
+        <br>
     <% } %>
     <table id='requestTable'>
         <tbody>
             <% requestedOrPlayedSongs.forEach((song) => { %>
                 <tr class='<%= song.played ? "off" : "" %>' id='tr_<%=song.uniqueId%>'
                     <% if (locals.isAdmin) { %> onclick='selectSong(this)' <% } %>>
-                    <td class='tdNumber'><%= song.id %></td>
                     <td class='tdTime'><%= song.playedAt %></td>
                     <td class='tdName'><%= song.name %></td>
                     <td class='tdUser'><%= song.requestedBy %></td>
@@ -22,5 +19,4 @@
             <% }); %>
         </tbody>
     </table>
-
 </div>

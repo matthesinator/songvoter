@@ -74,13 +74,12 @@ function connectWebsocket (retry, callback) {
  * @returns {*|Window.jQuery|HTMLElement} The created table row
  */
 function createTableRow(song, uniqueId) {
-    let tdId = $('<td class="tdNumber"></td>').text(song.id),
-        tdTime = $('<td class="tdTime"></td>'),
+    let tdTime = $('<td class="tdTime"></td>'),
         tdName = $('<td class="tdName"></td>').text(song.name),
         tdUser = $('<td class="tdUser"></td>').text(song.requestedBy),
         tr = $(`<tr id="tr_${uniqueId}" onclick='selectSong(this)'></tr>`);
 
-    tr.append(tdId, tdTime, tdName, tdUser);
+    tr.append(tdTime, tdName, tdUser);
     return tr;
 }
 
