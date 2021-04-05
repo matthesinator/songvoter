@@ -241,6 +241,10 @@ Controller.prototype.deletePlaylists = function (playlists) {
  * @param playlist The playlists names
  */
 Controller.prototype.blockPlaylists = function (playlist) {
+    if (!Array.isArray(playlist)) {
+        playlist = [playlist];
+    }
+
     playlist.forEach((name) => {
         this.songs[name]._disabled = !this.songs[name]._disabled;
     });

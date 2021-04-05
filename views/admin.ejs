@@ -6,16 +6,30 @@
         <link rel='stylesheet' href='/stylesheets/<%= mobile ? 'mobile' : 'desktop' %>.css'/>
         <link rel='stylesheet' href='/stylesheets/admin.css'/>
         <script src="/javascripts/index.js"></script>
+        <script src="/javascripts/adminFunctions.js"></script>
         <script src="https://code.jquery.com/jquery-3.6.0.min.js"
                 integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4="
                 crossorigin="anonymous"></script>
     </head>
     <body>
-        <div id="content">
+        <div class="flexContainer" id="content">
             <div id="requestsDiv">
                 <%- include('layouts/requestList') %>
-                <h3>Quicksettings</h3>
-                <button id='toggleRequestsBtn' onclick='toggleRequests(this)'>Block requests</button>
+                <div class="flexContainer">
+                    <div>
+                        <h3>Quicksettings</h3>
+                        <button id='toggleRequestsBtn' onclick='toggleRequests(this)'>Block requests</button>
+                    </div>
+                    <div>
+                        <h3>Enable or disable playlists</h3>
+                        <% for (let playlist in playlists) { %>
+                            <button class='<%= playlists[playlist]._disabled ? 'failure' : '' %>'
+                                    onclick='blockPlaylist("<%= playlist %>", this)'>
+                                <%= playlist %>
+                            </button>
+                        <% } %>
+                    </div>
+                </div>
             </div>
             <div id="voterDiv">
                 <%- include('layouts/voter') %>

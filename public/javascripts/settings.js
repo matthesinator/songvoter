@@ -140,7 +140,7 @@ function markForDelete(button) {
  *
  * @param button The pressed button
  */
-function blockPlaylist(button) {
+function markPlaylistToBlock(button) {
     let name = button.parentNode.parentNode.id.split('_')[1],
         index = playlistsBlocked.indexOf(name);
 
