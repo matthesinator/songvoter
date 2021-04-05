@@ -230,9 +230,7 @@ Controller.prototype.deletePlaylists = function (playlists) {
         delete this.songs[playlist];
     });
 
-    this.requestedSongs = new SongList();
-    this.playedSongs = new SongList();
-    this.sendMessageToViewers('reload');
+    this.resetRequestsPlayedData();
 };
 
 /**
@@ -264,6 +262,25 @@ Controller.prototype.renamePlaylists = function (oldName2newName) {
         });
         delete this.songs[oldName];
     }
+
+    this.resetRequestsPlayedData();
+};
+
+/**
+ * Resets the status of all played and requested songs and sends a reload message to all connected users.
+ */
+Controller.prototype.resetRequestsPlayedData = function () {
+    this.requestedSongs.getList().forEach((song) => {
+        song.requested = false;
+        song.requestedBy = undefined;
+    });
+
+    this.playedSongs.getList().forEach((song) => {
+        song.requested = false;
+        song.requestedBy = undefined;
+        song.played = false;
+        song.playedAt = undefined;
+    });
 
     this.requestedSongs = new SongList();
     this.playedSongs = new SongList();
