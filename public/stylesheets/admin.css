@@ -30,11 +30,16 @@
 
 #voterDiv {
     min-width: calc((100% - 4%) * (2/5));
+    max-height: 90vh;
 }
 
 @media screen and (max-aspect-ratio: 13/9){
     #voterDiv {
         display: none;
+    }
+
+    #requestsDiv {
+        min-width: calc((100% - 4%));
     }
 }
 

@@ -7,13 +7,15 @@
         <button onclick='setUserName()'>Save</button>
     </div>
     <div class='songwrapper'>
-        <% for (let playlist in playlists) { %>
-            <button class='playlist_btn<%= playlists[playlist]._disabled ? ' off' : '' %>' id='select#<%= playlist %>'
-                onclick='zelectPlaylist("<%= playlist %>", this)'>
-                <%= playlist %>
-            </button>
-        <% } %>
-        <br><br>
+        <div id="playlistWrapper">
+            <% for (let playlist in playlists) { %>
+                <button class='playlist_btn<%= playlists[playlist]._disabled ? ' off' : '' %>' id='select#<%= playlist %>'
+                        onclick='zelectPlaylist("<%= playlist %>", this)'>
+                    <%= playlist %>
+                </button>
+            <% } %>
+        </div>
+        <br>
         <% for (let playlist in playlists) {%>
             <table class='songsTable' id='<%= "table#" + playlist %>'>
                 <% playlists[playlist].songs.forEach(function (song) { %>
