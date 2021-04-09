@@ -28,16 +28,19 @@ function selectSong (tableRow) {
  * Send the currently selected song to the server and mark it as 'played'.
  */
 function markPlayedOnServer() {
-    let id = selectedRequestSong.split('_')[1];
+    let id = selectedRequestSong.split('_')[1],
+        currentTime = new Date().toLocaleTimeString('en-EN', {hour: '2-digit', minute:'2-digit'}),
+        message = { target: 'played', playedSong: id, playedAt: currentTime };
+
     selectedRequestRow.classList.remove('selected');
     selectedRequestRow = undefined;
     selectedRequestSong = undefined;
 
     if (ws) {
-        ws.send(`played:${id}`);
+        ws.send(JSON.stringify(message));
     } else {
         connectWebsocket(false, (createdWs) => {
-            createdWs.send('played:' + id);
+            createdWs.send(message);
         });
     }
 }
@@ -49,12 +52,11 @@ function markPlayedOnServer() {
  */
 function toggleRequests(button) {
     if (button.classList.contains('failure')) {
-        ws.send('allowRequests:true');
         button.classList.remove('failure');
     } else {
-        ws.send('allowRequests:false');
         button.classList.add('failure');
     }
+    ws.send('{ target: toggleRequests }');
 }
 
 /**

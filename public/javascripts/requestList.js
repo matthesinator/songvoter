@@ -35,7 +35,10 @@ function connectWebsocket (retry, callback) {
             markPlayedInTable(data.playedSong, data.uniqueId);
         } else if (data.unauthorized) {
             localStorage['passkey'] = prompt("Enter correct passkey to continue.");
-            ws.send('passkey:' + localStorage['passkey']);
+            ws.send(JSON.stringify({
+                target: 'authorize',
+                passkey: localStorage['passkey']
+            }));
             ws.send(data.initialRequest);
         } else if (data === 'reload') {
             location.reload();
@@ -45,10 +48,13 @@ function connectWebsocket (retry, callback) {
     ws.onopen = () => {
         if (window.location.pathname.includes('admin')) {
             localStorage['passkey'] = localStorage['passkey'] || prompt("Enter passkey");
-            ws.send(`passkey:${localStorage['passkey']}`);
+            ws.send(JSON.stringify({
+                target: 'authorize',
+                passkey: localStorage['passkey']
+            }));
         }
         if (callback) {
-            callback();
+            callback(ws);
         }
     }
 
