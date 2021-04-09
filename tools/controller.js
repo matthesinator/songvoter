@@ -91,11 +91,9 @@ Controller.prototype.requestSong = function (uniqueId, userName) {
 
 /**
  * Set whether new requests should be taken or rejected.
- *
- * @param allow Whether requests should be taken or rejected
  */
-Controller.prototype.allowRequests = function (allow) {
-    this.takeRequests = allow;
+Controller.prototype.toggleRequests = function () {
+    this.takeRequests = !this.takeRequests;
 };
 
 /**
@@ -103,7 +101,7 @@ Controller.prototype.allowRequests = function (allow) {
  *
  * @param uniqueId The unique identifier of the song
  */
-Controller.prototype.markSongPlayed = function (uniqueId) {
+Controller.prototype.markSongPlayed = function (uniqueId, playedAt) {
     let song = this.requestedSongs.getSong(uniqueId);
     if (!song) {
         return;
@@ -112,7 +110,7 @@ Controller.prototype.markSongPlayed = function (uniqueId) {
     this.requestedSongs.remove(uniqueId);
 
     song.played = true;
-    song.playedAt = new Date().toLocaleTimeString('en-EN', {hour: '2-digit', minute:'2-digit'});
+    song.playedAt = playedAt;
     this.playedSongs.addFirst(uniqueId, song);
     this.sendMessageToViewers({
         playedSong: song,

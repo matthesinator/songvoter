@@ -3,40 +3,41 @@ const { Server } = require('ws');
 exports.createWebsocketServer = function (server) {
     const wss = new Server({ server });
 
-    function handleMessage(message) {
-        let parts = message.split(':'),
-            command = parts[0],
-            argument = parts[1];
-
-        switch (command) {
-        case 'allowRequests':
-            globalController.allowRequests(argument === 'true');
-            return 'done';
-        case 'played':
-            globalController.markSongPlayed(argument);
-            return 'done';
-        default:
-            return 'did nothing';
-        }
-    }
-
     wss.on('connection', function (ws) {
         ws.send('connected');
         globalController.addViewer(ws);
 
         ws.on('message', function (message) {
-            if (message.startsWith('passkey')) {
-                ws.authorized = message.split(':')[1] === globalPasskey;
-                return;
+            message = JSON.parse(message);
+
+            switch (message.target) {
+            case 'authorize':
+                ws.authorized = message.passkey === globalPasskey;
+                break;
+            case 'played':
+                if (!ws.authorized) {
+                    return ws.send(JSON.stringify({
+                        unauthorized: true,
+                        initialRequest: message
+                    }));
+                }
+                if (!message.playedSong || !message.playedAt) {
+                    return ws.send(JSON.stringify({ error: 'argument missing' }));
+                }
+                globalController.markSongPlayed(message.playedSong, message.playedAt);
+                ws.send(JSON.stringify({ message: 'song marked' }));
+                break;
+            case 'toggleRequests':
+                if (!ws.authorized) {
+                    return ws.send(JSON.stringify({
+                        unauthorized: true,
+                        initialRequest: message
+                    }));
+                }
+                globalController.toggleRequests();
+                ws.send(JSON.stringify({ message: 'requests toggled' }));
+                break;
             }
-            if (!ws.authorized) {
-                ws.send(JSON.stringify({
-                    unauthorized: true,
-                    initialRequest: message
-                }));
-                return;
-            }
-            ws.send(handleMessage(message));
         });
 
         ws.on('close', function () {
