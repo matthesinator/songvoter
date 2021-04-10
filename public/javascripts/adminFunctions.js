@@ -56,7 +56,7 @@ function toggleRequests(button) {
     } else {
         button.classList.add('failure');
     }
-    ws.send('{ target: toggleRequests }');
+    ws.send(JSON.stringify({ target: 'toggleRequests'}));
 }
 
 /**
