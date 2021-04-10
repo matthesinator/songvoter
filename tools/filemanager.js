@@ -76,7 +76,7 @@ exports.exportJSONFile = function (filepath, json) {
         dirname = filepath.substring(0, filepath.lastIndexOf('/'));
 
     try {
-        if (!fs.existsSync(dirname)){
+        if (!fs.existsSync(dirname)) {
             fs.mkdirSync(dirname);
         }
         fs.writeFile(filepath, data, "utf8", (err) => {

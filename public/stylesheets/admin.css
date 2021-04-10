@@ -8,7 +8,7 @@
     width: 100%;
 }
 
-.flexContainer > div{
+.flexContainer > div {
     margin: 1%;
     margin-left: 0;
     min-height: calc(100% - 2%);
@@ -19,7 +19,7 @@
     height: 100%;
 }
 
-#content > div{
+#content > div {
     min-height: calc(100% - 2%);
     margin: 1%;
 }
@@ -33,7 +33,7 @@
     max-height: 90vh;
 }
 
-@media screen and (max-aspect-ratio: 13/9){
+@media screen and (max-aspect-ratio: 13/9) {
     #voterDiv {
         display: none;
     }
@@ -47,7 +47,7 @@
     font-size: 20px;
 }
 
-#requestTable td{
+#requestTable td {
     border-bottom: 1px solid var(--main-acc);
 }
 
