@@ -19,7 +19,7 @@
         <br>
         <% for (let playlist in playlists) {
             if (playlists[playlist]._disabled) {continue;} %>
-            <table class='songsTable' id='<%= "table#" + playlist %>'>
+            <table class='songsTable hidden' id='<%= "table_" + playlist %>'>
                 <% playlists[playlist].songs.forEach(function (song) { %>
                     <tr class="<%= song.requested ? ' off' : "" %>" id="vote_<%= song.uniqueId %>"
                         onclick='zelectSong("<%= song.uniqueId %>", this)'>

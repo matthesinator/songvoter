@@ -3,12 +3,7 @@
     --voterTableHeight: 75vh;
 }
 
-.flexContainer {
-    display: flex;
-    width: 100%;
-}
-
-.flexContainer > div{
+.flexContainer > div {
     margin: 1%;
     margin-left: 0;
     min-height: calc(100% - 2%);
@@ -17,11 +12,6 @@
 
 #content {
     height: 100%;
-}
-
-#content > div{
-    min-height: calc(100% - 2%);
-    margin: 1%;
 }
 
 #requestsDiv {
@@ -44,7 +34,7 @@
 }
 
 #requestTable {
-    font-size: 20px;
+    font-size: 2.5ex;
 }
 
 #requestTable td{

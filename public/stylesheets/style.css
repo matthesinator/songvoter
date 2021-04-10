@@ -49,6 +49,16 @@
     display: none !important;
 }
 
+.flexContainer {
+    display: flex;
+    width: 100%;
+}
+
+#content > div{
+    min-height: calc(100% - 2%);
+    margin: 1%;
+}
+
 body {
     color: var(--main-fg);
     background-color: var(--main-bg);
@@ -85,45 +95,17 @@ table {
     border: 2px solid var(--main-acc);
     user-select: none;
     border-collapse: collapse;
-}
-
-table > thead {
-    border: 2px solid var(--main-acc);
-    user-select: none;
-    background-color: var(--sec-acc);
-    color: var(--main-fg);
-    text-align: center;
-}
-table > thead > tr > td {
-    border: 2px solid var(--main-acc);
-}
-
-.tdNumber {
-    border-right: 1px solid var(--main-fg);
-    border-bottom: 1px solid var(--main-fg);
-    text-align: right;
-    padding-right: 5px;
-    min-width: 4.5ex;
-}
-
-.tdName, .tdUser {
-    padding-left: 10px;
-    width: 100%;
-}
-
-.tdUser {
-    text-align: right;
-    padding-right: 5px;
-}
-
-.tdTime {
-    min-width: 9ex;
-    text-align: center;
+    display: block;
 }
 
 tr {
     width: 100%;
     cursor: pointer;
+}
+
+.tdName {
+    width: 100%;
+    padding-left: 10px;
 }
 
 hr.line {

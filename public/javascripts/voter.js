@@ -3,7 +3,8 @@ let selectedPlaylistName, selectedPlaylistButton, selectedRow, selectedSong, sta
 
 document.addEventListener('DOMContentLoaded', function () {
     let playlistTables = document.getElementsByClassName('songsTable');
-    playlistTables[0].style.display = 'block';
+
+    playlistTables[0].classList.remove('hidden');
     selectedPlaylistButton = document.getElementsByClassName('playlist_btn')[0];
     selectedPlaylistButton.classList.add('selected');
 
@@ -31,9 +32,9 @@ document.addEventListener('DOMContentLoaded', function () {
 function zelectPlaylist (name, button) {
     let playlistTables = document.getElementsByClassName('songsTable');
     Array.prototype.forEach.call(playlistTables, table => {
-        table.style.display = 'none';
+        table.classList.add('hidden');
     });
-    document.getElementById('table#' + name).style.display = 'block';
+    document.getElementById('table_' + name).classList.remove('hidden');
     selectedPlaylistName = name;
 
     if (selectedPlaylistButton) {

@@ -13,7 +13,18 @@
 }
 
 #requestTable, #requestTable > tbody {
-    display: block;
     max-height: var(--requestTableHeight);
     min-height: var(--requestTableHeight);
+}
+
+.tdTime {
+    min-width: 9ex;
+    text-align: center;
+}
+
+.tdUser {
+    text-align: right;
+    white-space: pre;
+    padding-right: 5px;
+    padding-left: 10px;
 }

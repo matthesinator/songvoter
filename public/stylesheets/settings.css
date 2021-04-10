@@ -2,7 +2,7 @@
     min-width: 25%;
 }
 
-#filesTable td {//push this seperately
+#filesTable td {
     max-width: 15vw;
     padding: 0 10px;
 }
