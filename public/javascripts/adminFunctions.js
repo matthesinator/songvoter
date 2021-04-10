@@ -39,8 +39,8 @@ function markPlayedOnServer() {
     if (ws) {
         ws.send(JSON.stringify(message));
     } else {
-        connectWebsocket(false, (createdWs) => {
-            createdWs.send(message);
+        connectWebsocket((ws) => {
+            ws.send(message);
         });
     }
 }

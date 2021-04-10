@@ -1,4 +1,5 @@
-let ws, wsTimeout, requestsTable;
+let ws, wsErrorCounter = 0, wsTimeout, requestsTable;
+
 document.addEventListener('DOMContentLoaded', function () {
     connectWebsocket();
     requestsTable = document.getElementById('requestTable');
@@ -7,26 +8,40 @@ document.addEventListener('DOMContentLoaded', function () {
 /**
  * Opens a websocket connection to the server to refresh requested and played songs in real time.
  *
- * @param retry As long as this is false, the function will retry to connect if the connection failed
  * @param callback Function to call when a connection has been established
  */
-function connectWebsocket (retry, callback) {
-    ws = new WebSocket(location.origin.replace(/^http/, 'ws'))
+function connectWebsocket (callback) {
+    ws = new WebSocket(location.origin.replace(/^http/, 'ws'));
+
+    /**
+     * Check if the websocket is still connected every 10 seconds. Reconnect if necessary.
+     *
+     * @param timeout When the connection should be checked again
+     */
+    function setWsTimeout(timeout) {
+        clearTimeout(wsTimeout);
+        wsTimeout = setTimeout(() => {
+            if (ws.readyState !== 1) {
+                connectWebsocket();
+            } else {
+                setWsTimeout();
+            }
+        }, timeout);
+    }
 
     ws.onerror = () => {
-        if (!retry) {
-            connectWebsocket(true);
-        } else {
-            console.warn("Couldn't connect to websocket");
-        }
+        wsErrorCounter++;
+        let timeout = wsErrorCounter * 10000;
+        console.warn(`Couldn't connect to websocket, trying again in ${timeout / 1000} seconds.`);
+        setWsTimeout(timeout);
     };
 
-    ws.onmessage = (response) => {
+    ws.onmessage = (message) => {
         let data;
         try {
-            data = JSON.parse(response.data);
+            data = JSON.parse(message.data);
         } catch (SyntaxError) {
-            data = response.data;
+            data = message.data;
         }
 
         if (data.request) {
@@ -46,6 +61,9 @@ function connectWebsocket (retry, callback) {
     }
 
     ws.onopen = () => {
+        console.log('Websocket connected.');
+        wsErrorCounter = 0;
+
         if (window.location.pathname.includes('admin')) {
             localStorage['passkey'] = localStorage['passkey'] || prompt("Enter passkey");
             ws.send(JSON.stringify({
@@ -58,17 +76,7 @@ function connectWebsocket (retry, callback) {
         }
     }
 
-    // Check if the websocket is still connected every 10 seconds. Reconnect if necessary
-    (function setWsTimeout() {
-        clearTimeout(wsTimeout);
-        wsTimeout = setTimeout(() => {
-            if (ws.readyState !== 1) {
-                connectWebsocket();
-            } else {
-                setWsTimeout();
-            }
-        }, 10000);
-    })();
+    setWsTimeout(10000);
 }
 
 /**
