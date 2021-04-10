@@ -1,10 +1,6 @@
-#filesTable {
-    min-width: 25%;
-}
-
 #filesTable td {
     max-width: 15vw;
-    padding: 0 10px;
+    padding: 0 20px;
 }
 
 #filesTable input[type=text] {

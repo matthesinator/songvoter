@@ -7,7 +7,7 @@
     right: 0;
     top: 0;
     color: var(--main-fg);
-    background-color: var(--main-acc);
+    background-color: var(--light-acc);
     font-size: 20px;
     border: 1px solid var(--main-fg);
 }

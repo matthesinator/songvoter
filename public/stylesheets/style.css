@@ -2,9 +2,9 @@
     :root {
         --main-fg: #eee;
         --main-bg: #121212;
-        --main-acc: rgb(184, 111, 1);
-        --main-black: #0e0d0d;
-        --sec-acc: #2c1b00;
+        --light-acc: rgb(213, 129, 0);
+        --sec-acc: #822900;
+        --bg-acc: #000;
         --off: rgb(70, 70, 70);
     }
 }
@@ -13,16 +13,16 @@
     :root {
         --main-fg: black;
         --main-bg: white;
-        --main-acc: orange;
-        --main-black: #0e0d0d;
-        --sec-acc: #ffcc7b;
+        --light-acc: orange;
+        --sec-acc: #ffb86e;
+        --bg-acc: #ffd898;
         --off: rgb(201, 201, 201);
     }
 }
 
 .selected {
     color: var(--main-fg) !important;
-    background-color: var(--main-acc) !important;
+    background-color: var(--light-acc) !important;
 }
 
 .off {
@@ -37,7 +37,7 @@
 
 .failure {
     color: red !important;
-    background-color: var(--main-bg) !important;
+    background-color: inherit !important;
 }
 
 .warning {
@@ -68,20 +68,20 @@ body {
 button, input[type=submit] {
     background-color: var(--sec-acc);
     color: var(--main-fg);
-    border: 1px solid var(--main-acc);
+    border: 1px solid var(--light-acc);
     border-radius: 2px;
     cursor: pointer;
 }
 
 input[type=text] {
-    background-color: var(--main-bg);
+    background-color: inherit;
     color: var(--main-fg);
     padding: 0.5ex;
-    border: 1px solid var(--main-acc);
+    border: 1px solid var(--light-acc);
 }
 
 a {
-    color: var(--main-acc);
+    color: var(--light-acc);
     background-color: var(--main-bg);
     text-decoration: none;
     font-size: 2em;
@@ -91,11 +91,25 @@ a {
 }
 
 table {
-    overflow-y: scroll;
-    border: 2px solid var(--main-acc);
+    background-color: var(--main-bg);
+    overflow-y: auto;
+    border: 2px solid var(--light-acc);
     user-select: none;
     border-collapse: collapse;
     display: block;
+    max-width: max-content;
+}
+
+thead td {
+    background-color: var(--sec-acc);
+}
+
+tr:nth-child(even) {
+    background: var(--main-bg);
+}
+
+tr:nth-child(odd) {
+    background: var(--bg-acc);
 }
 
 tr {
@@ -109,5 +123,5 @@ tr {
 }
 
 hr.line {
-    border: 1px solid var(--main-black);
+    border: 1px solid var(--bg-acc);
 }

@@ -39,8 +39,6 @@
 }
 
 .tdNumber {
-    border-right: 1px solid var(--main-fg);
-    border-bottom: 1px solid var(--main-fg);
     text-align: right;
     padding-right: 5px;
     min-width: 4.5ex;
