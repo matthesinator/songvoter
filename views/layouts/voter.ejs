@@ -8,15 +8,17 @@
     </div>
     <div class='songwrapper'>
         <div id="playlistWrapper">
-            <% for (let playlist in playlists) { %>
-                <button class='playlist_btn<%= playlists[playlist]._disabled ? ' off' : '' %>' id='select#<%= playlist %>'
+            <% for (let playlist in playlists) {
+                if (playlists[playlist]._disabled) {continue;} %>
+                <button class='playlist_btn' id='select#<%= playlist %>'
                         onclick='zelectPlaylist("<%= playlist %>", this)'>
                     <%= playlist %>
                 </button>
             <% } %>
         </div>
         <br>
-        <% for (let playlist in playlists) {%>
+        <% for (let playlist in playlists) {
+            if (playlists[playlist]._disabled) {continue;} %>
             <table class='songsTable' id='<%= "table#" + playlist %>'>
                 <% playlists[playlist].songs.forEach(function (song) { %>
                     <tr class="<%= song.requested ? ' off' : "" %>" id="vote_<%= song.uniqueId %>"
