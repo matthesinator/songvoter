@@ -24,7 +24,7 @@
         <form id="fileUploadForm" action="/admin/uploadcsvplaylist" enctype="multipart/form-data" method="post">
             <input id="file-input" type="file" name="playlists" multiple value="Select .csv files">
             <br><br>
-            <table id="filesTable">
+            <table id="filesTable" class="smallTable">
                 <thead>
                 <tr><td>File name</td><td>Playlist name</td></tr>
                 </thead>
@@ -37,7 +37,7 @@
         <h4>Manage your playlists</h4>
         <p>Block, rename or delete playlists. <span class="failure">Warning:</span> Renaming or deleting a playlist will
             lead to all requests resetting</p>
-        <table id="playlistSelection">
+        <table id="playlistSelection" class="smallTable">
             <% for (let playlist in playlists) { %>
                 <tr id="playlistsTable_<%= playlist %>">
                     <td><%= playlist %></td>

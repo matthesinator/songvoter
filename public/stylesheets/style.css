@@ -99,6 +99,10 @@ table {
     display: block;
 }
 
+.smallTable {
+    max-width: max-content;
+}
+
 td {
     vertical-align: middle;
 }
