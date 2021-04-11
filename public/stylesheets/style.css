@@ -97,7 +97,10 @@ table {
     user-select: none;
     border-collapse: collapse;
     display: block;
-    max-width: max-content;
+}
+
+td {
+    vertical-align: middle;
 }
 
 thead td {
@@ -113,7 +116,6 @@ tr:nth-child(odd) {
 }
 
 tr {
-    width: 100%;
     cursor: pointer;
 }
 
