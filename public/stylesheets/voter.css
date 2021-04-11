@@ -23,10 +23,8 @@
     max-width: 90%;
 }
 
-#playlistWrapper button {
-}
-
 .playlist_btn {
+    font-size: 1.5em;
     background-color: var(--main-bg);
     border: none;
     border-right: 2px solid var(--main-fg);
@@ -35,15 +33,15 @@
     cursor: pointer;
 }
 
-.playlist_btn {
-    font-size: 1.5em;
-}
-
-
 .songsTable {
-    display: none;
     max-height: var(--voterTableHeight);
     min-height: var(--voterTableHeight);
+}
+
+.tdNumber {
+    text-align: right;
+    padding-right: 5px;
+    min-width: 4.5ex;
 }
 
 #statusText {
