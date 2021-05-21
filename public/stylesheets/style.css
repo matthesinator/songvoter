@@ -73,7 +73,7 @@ button, input[type=submit] {
     cursor: pointer;
 }
 
-input[type=text] {
+input[type=text], input[type=number] {
     background-color: inherit;
     color: var(--main-fg);
     padding: 0.5ex;

@@ -36,7 +36,7 @@
         <hr>
         <h4>Manage your playlists</h4>
         <p>Block, rename or delete playlists. <span class="failure">Warning:</span> Renaming or deleting a playlist will
-            lead to all requests resetting</p>
+            lead to all requests resetting.</p>
         <table id="playlistSelection" class="smallTable">
             <% for (let playlist in playlists) { %>
                 <tr id="playlistsTable_<%= playlist %>">
@@ -50,6 +50,11 @@
         </table>
         <br>
         <button id="confirmPlaylistChanges">Confirm changes.</button>
+        <hr>
+        <h4>Set a rate limit for requests</h4>
+        <p>This blocks users from sending more than one request per timeframe. A value of 0 disables the ratelimit.</p>
+        <input type='number' id="ratelimit" value="5" min="0">
+        <button id="confirmRatelimitBtn">Save</button>
         <hr>
         <h4>Store current playlists for later use</h4>
         <p>This resets the 'requested' and 'played' status for all songs</p>

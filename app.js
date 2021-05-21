@@ -3,10 +3,16 @@ let createError = require('http-errors'),
     path = require('path'),
     cookieParser = require('cookie-parser'),
     logger = require('morgan'),
-    favicon = require('serve-favicon');
+    favicon = require('serve-favicon'),
+    rateLimit = require('express-rate-limit');
 
 global.globalController = require('./tools/controller');
 global.globalPasskey = 'z3l3ct3r';
+global.globalRatelimiter = rateLimit({
+    windowMs: 5 * 60 * 1000,
+    max: 1,
+    message: `Only one request per 5 minute(s) possible.`
+});
 
 let adminRouter = require('./routes/admin'),
     viewersRouter = require('./routes/viewers'),

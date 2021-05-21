@@ -68,6 +68,14 @@ $(document).ready(function () {
         });
     });
 
+    $('#confirmRatelimitBtn').click(() => {
+        let timeframe = $('#ratelimit')[0].value;
+
+        sendRequest('/admin/setratelimit', {
+            data: {timeframe: timeframe}
+        });
+    });
+
     $('#readBtn').click(() => {
         sendRequest("/admin/readsavedsongs");
     });

@@ -79,6 +79,19 @@ router.post('/changeplaylists', function (req, res) {
     res.send('Operations applied.');
 });
 
+router.post('/setratelimit', function (req, res) {
+    if (!checkAuthorization(req, res)) {
+        return;
+    }
+
+    if (!req.body.timeframe) {
+        return res.status(400).send('No timeframe supplied.');
+    }
+
+    globalController.changeRatelimit(req.body.timeframe);
+    res.send('Timeframe set');
+});
+
 router.post('/blockplaylist', (req, res) => {
     if (!checkAuthorization(req, res)) {
         return;

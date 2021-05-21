@@ -1,6 +1,7 @@
 let SongList = require('./songList');
 let path = require('path');
-let fileManager = require('./filemanager');
+let fileManager = require('./filemanager'),
+    rateLimit = require('express-rate-limit');
 
 /**
  * Manages requests and played songs, and notifies connected users of changes of both.
@@ -54,6 +55,14 @@ Controller.prototype.findSong = function (uniqueId) {
 
     return this.songs[parts[0]].songs.find((song) => {
         return song.id === parts[1];
+    });
+};
+
+Controller.prototype.changeRatelimit = function (timeframe) {
+    globalRatelimiter = rateLimit({
+        windowMs: timeframe * 60 * 1000,
+        max: 1,
+        message: `Only one request per ${timeframe} minute(s) possible.`
     });
 };
 

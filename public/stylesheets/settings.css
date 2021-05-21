@@ -14,6 +14,10 @@
     color: red;
 }
 
+#ratelimit {
+    width: 5ex;
+}
+
 #setPasskeyBtn {
     position: absolute;
     top: 5px;
