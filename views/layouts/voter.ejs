@@ -23,8 +23,11 @@
                 <% playlists[playlist].songs.forEach(function (song) { %>
                     <tr class="<%= song.requested ? ' off' : "" %>" id="vote_<%= song.uniqueId %>"
                         onclick='zelectSong("<%= song.uniqueId %>", this)'>
-                        <td class='tdNumber'><%= song.id %></td>
-                        <td class='tdName'><%= song.name %></td>
+                        <% for (let column of Object.values(playlists[playlist]._columns)) { %>
+                            <td><%= song[column] %></td>
+                        <!--<td class='tdNumber'><%= song.id %></td>
+                        <td class='tdName'><%= song.name %></td>-->
+                        <% } %>
                     </tr>
                 <% }); %>
             </table>
