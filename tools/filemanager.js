@@ -21,7 +21,7 @@ exports.importPlaylistFromCSV = function (filepath, name) {
             return true;
         }
 
-        let parts = line.split(",");
+        let parts = line.split("\t");
         playlist.songs.push({
             id: parts[0],
             name: parts[1],
@@ -51,7 +51,7 @@ exports.importPlaylistFromString = function (string, name) {
             return;
         }
 
-        let parts = line.split(",");
+        let parts = line.split("\t");
         playlist.songs.push({
             id: parts[0],
             name: parts[1],
