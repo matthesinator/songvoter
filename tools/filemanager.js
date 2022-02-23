@@ -13,25 +13,36 @@ exports.importPlaylistFromCSV = function (filepath, name) {
         _disabled: false,
         _filepath: filepath,
         _name: name,
+        _columns: {},
         songs: []
     };
 
     reader.eachLine(filepath, function (line) {
         if (!/^\d/.test(line)) {
+            line.split("\t").forEach((part, i) => {
+                if (part === "#") {
+                    part = "id";
+                }
+                playlist._columns[i] = part.toLowerCase().replace(" ", "-");
+            });
             return true;
         }
 
-        let parts = line.split("\t");
-        playlist.songs.push({
-            id: parts[0],
-            name: parts[1],
-            requested: false,
-            requestedBy: undefined,
-            requestCounter: 0,
-            played: false,
-            playedAt: undefined,
-            uniqueId: `${name}.${parts[0]}`
-        });
+        let parts = line.split("\t"),
+            song = {
+                requested: false,
+                requestedBy: undefined,
+                requestCounter: 0,
+                played: false,
+                playedAt: undefined,
+                uniqueId: `${name}.${parts[0]}`
+            };
+
+        for (let index in playlist._columns) {
+            song[playlist._columns[index]] = parts[index];
+        }
+
+        playlist.songs.push(song);
     });
 
     globalController.addPlaylist(name, playlist);
@@ -43,25 +54,37 @@ exports.importPlaylistFromString = function (string, name) {
         playlist = {
             _disabled: false,
             _name: name,
+            _columns: {},
             songs: []
         };
 
     lines.forEach((line) => {
         if (!/^\d/.test(line)) {
+            line.split("\t").forEach((part, i) => {
+                if (part === "#") {
+                    part = "id";
+                }
+                playlist._columns[i] = part.toLowerCase().replace(" ", "-");
+            });
             return;
         }
 
-        let parts = line.split("\t");
-        playlist.songs.push({
-            id: parts[0],
-            name: parts[1],
-            requested: false,
-            requestedBy: undefined,
-            requestCounter: 0,
-            played: false,
-            playedAt: undefined,
-            uniqueId: `${name}.${parts[0]}`
-        });
+        let parts = line.split("\t"),
+            song = {
+                requested: false,
+                requestedBy: undefined,
+                requestCounter: 0,
+                played: false,
+                playedAt: undefined,
+                uniqueId: `${name}.${parts[0]}`,
+                _columns: playlist._columns
+            };
+
+        for (let index in playlist._columns) {
+            song[playlist._columns[index]] = parts[index];
+        }
+
+        playlist.songs.push(song);
     });
 
     globalController.addPlaylist(name, playlist);

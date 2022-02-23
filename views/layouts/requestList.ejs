@@ -9,11 +9,14 @@
     <table id='requestTable'>
         <tbody>
             <% requestedOrPlayedSongs.forEach((song) => { %>
-                <tr class='<%= song.played ? "off" : "" %>' id='tr_<%=song.uniqueId%>'
+                <tr class='songRow <%= song.played ? "off" : "" %>' id='tr_<%=song.uniqueId%>'
                     <% if (locals.isAdmin) { %> onclick='selectSong(this)' <% } %>>
-                    <td class='tdTime'><%= song.playedAt %></td>
-                    <td class='tdName'><%= song.name %></td>
-                    <td class='tdUser'><%= song.requestedBy %></td>
+                    <% let i=0; for (let column of Object.values(song._columns)) {
+                        if (i === 0) {
+                            i++; continue; } %>
+                        <td class="songCell <%= `cell${i}`%>"><%= song[column] %></td>
+                    <% i++; } %>
+                    <td class='songCell tdUser'><%= song.requestedBy %></td>
                 </tr>
             <% }); %>
         </tbody>

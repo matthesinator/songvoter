@@ -15,6 +15,20 @@
 #requestTable, #requestTable > tbody {
     max-height: var(--requestTableHeight);
     min-height: var(--requestTableHeight);
+    table-layout: fixed;
+}
+
+.songRow {
+    width: 100%;
+}
+
+#requestTable tr td:last-child {
+    width: 100%;
+}
+
+.songCell {
+    white-space: nowrap;
+    padding-right: 2ex;
 }
 
 .tdTime {

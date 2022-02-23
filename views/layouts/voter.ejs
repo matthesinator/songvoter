@@ -21,10 +21,11 @@
             if (playlists[playlist]._disabled) {continue;} %>
             <table class='songsTable hidden' id='<%= "table_" + playlist %>'>
                 <% playlists[playlist].songs.forEach(function (song) { %>
-                    <tr class="<%= song.requested ? ' off' : "" %>" id="vote_<%= song.uniqueId %>"
+                    <tr class="songRow <%= song.requested ? ' off' : "" %>" id="vote_<%= song.uniqueId %>"
                         onclick='zelectSong("<%= song.uniqueId %>", this)'>
-                        <td class='tdNumber'><%= song.id %></td>
-                        <td class='tdName'><%= song.name %></td>
+                        <% let i=0; for (let column of Object.values(playlists[playlist]._columns)) { %>
+                            <td class="songCell <%= `cell${i}`%>"><%= song[column] %></td>
+                        <% i++; } %>
                     </tr>
                 <% }); %>
             </table>
