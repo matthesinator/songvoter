@@ -76,7 +76,8 @@ exports.importPlaylistFromString = function (string, name) {
                 requestCounter: 0,
                 played: false,
                 playedAt: undefined,
-                uniqueId: `${name}.${parts[0]}`
+                uniqueId: `${name}.${parts[0]}`,
+                _columns: playlist._columns
             };
 
         for (let index in playlist._columns) {
