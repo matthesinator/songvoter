@@ -38,6 +38,26 @@
     min-height: var(--voterTableHeight);
 }
 
+.songRow {
+    width: 100%;
+}
+
+.songsTable tr td:first-child {
+    padding-right: 10px;
+}
+
+.songsTable tr td:nth-child(2) {
+    padding-right: 5em;
+}
+
+.songsTable tr td:last-child {
+    width: 100%;
+}
+
+.songCell {
+    white-space: nowrap;
+}
+
 .tdNumber {
     text-align: right;
     padding-right: 5px;
