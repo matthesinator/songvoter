@@ -9,6 +9,7 @@ let fileManager = require('./filemanager'),
  * @constructor
  */
 function Controller() {
+    this.ratelimit = 5;
     this.takeRequests = true;
     this.requestedSongs = new SongList();
     this.playedSongs = new SongList();
@@ -59,6 +60,7 @@ Controller.prototype.findSong = function (uniqueId) {
 };
 
 Controller.prototype.changeRatelimit = function (timeframe) {
+    this.ratelimit = timeframe;
     globalRatelimiter = rateLimit({
         windowMs: timeframe * 60 * 1000,
         max: 1,

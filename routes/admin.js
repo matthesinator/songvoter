@@ -25,7 +25,8 @@ router.get('/', function(req, res) {
 router.get('/settings', function (req, res) {
     res.render('settings', {
         mobile: ('mobile' in req.query),
-        playlists: globalController.getSongs()
+        playlists: globalController.getSongs(),
+        ratelimit: globalController.ratelimit
     });
 });
 
