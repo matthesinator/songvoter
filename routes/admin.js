@@ -1,6 +1,7 @@
 var express = require('express');
 var router = express.Router();
 var filereader = require('../tools/filemanager');
+const TwitchLevel = require('../classes/TwitchLevel');
 let multer = require('multer'),
     storage = multer.memoryStorage(),
     upload = multer({ storage: storage });
@@ -13,6 +14,7 @@ router.get('/', function(req, res) {
 
     res.render('admin', {
         isAdmin: true,
+        loggedIn: true, //TODO: Get from Controller, as String so Name can be shown
         mobile: ('mobile' in req.query),
         playlists: globalController.getSongs(),
         requestedOrPlayedSongs: requestedOrPlayedSongs
@@ -25,6 +27,7 @@ router.get('/', function(req, res) {
 router.get('/settings', function (req, res) {
     res.render('settings', {
         mobile: ('mobile' in req.query),
+        loggedIn: false, //TODO: Get from Controller
         playlists: globalController.getSongs(),
         ratelimit: globalController.ratelimit
     });
@@ -93,6 +96,25 @@ router.post('/setratelimit', function (req, res) {
     res.send('Timeframe set');
 });
 
+router.post('/setTwitchRequirement', function (req, res) {
+    if (!checkAuthorization(req, res)) {
+        return;
+    }
+
+    if (!req.body.TwitchRequirement) {
+        return res.status(400).send('No Twitch requirement supplied.');
+    }
+
+    const newRequirement = req.body.TwitchRequirement;
+
+    if (!(newRequirement in TwitchLevel)) {
+        return res.status(400).send('Unknown Twitch requirement.');
+    }
+
+    globalController.setTwitchRequirement(newRequirement);
+    res.send('Twitch requirement set');
+});
+
 router.post('/blockplaylist', (req, res) => {
     if (!checkAuthorization(req, res)) {
         return;
@@ -149,9 +171,9 @@ router.post('/deletesavedsongs', function (req, res) {
  * @return {boolean} Whether the request is authorized
  */
 function checkAuthorization(req, res) {
-    let authHeader = req.get('auth');
+    const userId = req.header('uid');
 
-    if (authHeader !== globalPasskey) {
+    if (!userId === globalController.getStreamer().getUserId()) {
         if (req.method === 'GET') {
             res.status(401).render('error', {
                 message: '401: Unauthorized',
@@ -161,10 +183,11 @@ function checkAuthorization(req, res) {
                 }
             });
         } else {
-            res.status(401).send('Passkey wrong or missing');
+            res.status(401).send('Only the streamer is allowed to change these settings.');
         }
         return false;
     }
+
     return true;
 }
 

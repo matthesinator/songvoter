@@ -6,6 +6,10 @@ let createError = require('http-errors'),
     favicon = require('serve-favicon'),
     rateLimit = require('express-rate-limit');
 
+if (process.env.NODE_ENV !== 'production') {
+    require('dotenv').config();
+}
+
 global.globalController = require('./tools/controller');
 global.globalPasskey = 'z3l3ct3r';
 global.globalRatelimiter = rateLimit({
@@ -16,6 +20,7 @@ global.globalRatelimiter = rateLimit({
 
 let adminRouter = require('./routes/admin'),
     viewersRouter = require('./routes/viewers'),
+    loginRouter = require('./routes/login'),
     app = express();
 
 // view engine setup
@@ -31,6 +36,7 @@ app.use(favicon(path.join(__dirname,'public','images','favicon.ico')));
 
 app.use('/admin', adminRouter);
 app.use('/', viewersRouter);
+app.use('/login', loginRouter);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

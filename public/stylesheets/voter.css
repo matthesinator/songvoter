@@ -14,9 +14,11 @@
     width: 100%;
 }
 
-#namewrapper > button {
+#namewrapper > div {
     margin-top: 5px;
     float: right;
+    overflow: hidden;
+    white-space: nowrap;
 }
 
 #playlistWrapper {

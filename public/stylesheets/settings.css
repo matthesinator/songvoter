@@ -18,12 +18,6 @@
     width: 5ex;
 }
 
-#setPasskeyBtn {
-    position: absolute;
-    top: 5px;
-    right: 5px;
-}
-
 #playlistSelection td:first-of-type {
     min-width: 10em;
 }

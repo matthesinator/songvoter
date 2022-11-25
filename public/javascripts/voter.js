@@ -88,6 +88,7 @@ function sendRequest () {
     let xhr = new XMLHttpRequest();
     xhr.open('POST', '/songrequest');
     xhr.setRequestHeader('Content-Type', 'application/json');
+    xhr.setRequestHeader('uid', 'varo');
     xhr.onreadystatechange = function () {
         let statusText = document.getElementById('statusText');
 

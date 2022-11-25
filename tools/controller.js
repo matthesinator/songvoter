@@ -14,8 +14,11 @@ function Controller() {
     this.requestedSongs = new SongList();
     this.playedSongs = new SongList();
     this.songs = {};
+    this.streamer = null;
+    this.twitchUsers = {};
     this.viewers = [];
     this.filePath = path.join(__dirname, '..', 'data', 'songs.json');
+    this.twitchRequirement = 'none';
     this.readSavedSongs();
 }
 
@@ -298,6 +301,46 @@ Controller.prototype.resetRequestsPlayedData = function () {
     this.requestedSongs = new SongList();
     this.playedSongs = new SongList();
     this.sendMessageToViewers('reload');
+};
+
+Controller.prototype.getStreamer = function () {
+    return this.streamer;
+};
+
+Controller.prototype.setStreamer = function (streamer) {
+    let userId = `${Date.now()}`;
+
+    while (userId in this.twitchUsers) {
+        userId = `${Date.now()}`;
+    }
+    streamer.setUserId(userId);
+    this.streamer = streamer;
+
+    return userId;
+};
+
+Controller.prototype.addTwitchUser = function (user) {
+    let userId = `${Date.now()}`;
+
+    while (userId in this.twitchUsers) {
+        userId = `${Date.now()}`;
+    }
+    user.setUserId(userId);
+    this.twitchUsers[userId] = user;
+
+    return userId;
+};
+
+Controller.prototype.getTwitchUser = function (userId) {
+    return this.twitchUsers[userId]
+};
+
+Controller.prototype.setTwitchRequirement = function (newRequirement) {
+    this.twitchRequirement = newRequirement;
+};
+
+Controller.prototype.getTwitchRequirement = function () {
+    return this.twitchRequirement;
 };
 
 let controller = new Controller();

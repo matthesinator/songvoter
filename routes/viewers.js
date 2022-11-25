@@ -1,5 +1,6 @@
 var express = require('express');
 var router = express.Router();
+const TwitchLevel = require('../classes/TwitchLevel');
 
 let limiterWrapper = function(req, res, next) {
     globalRatelimiter(req, res, next);
@@ -9,6 +10,7 @@ router.get('/', function(req, res) {
     let requestedOrPlayedSongs = globalController.getRequestedSongs().concat(globalController.getPlayedSongs());
 
     res.render('index', {
+        isAdmin: false,
         mobile: ('mobile' in req.query),
         playlists: globalController.getSongs(),
         requestedOrPlayedSongs: requestedOrPlayedSongs
@@ -20,6 +22,19 @@ router.get('/songs', function (req, res) {
 });
 
 router.post('/songrequest', limiterWrapper, function (req, res) {
+    const twitchRequirement = globalController.getTwitchRequirement();
+
+    if (twitchRequirement !== 'none') {
+        const userId = req.header('uid'),
+            user = globalController.getTwitchUser(userId),
+            userLevel = user.getTwitchLevel(),
+            neededLevel = globalController.getTwitchRequirement();
+
+        if (TwitchLevel[userLevel] < TwitchLevel[globalController.getTwitchRequirement()]) {
+            return res.status(401).send(`You need to be a Twitch ${neededLevel} to vote!`)
+        }
+    }
+
     if (!req.body.uniqueId) {
         return res.status(400).send('Playlist or ID missing');
     }

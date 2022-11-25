@@ -65,6 +65,12 @@ body {
     font-family: "Lucida Grande", Helvetica, Arial, sans-serif;
 }
 
+a, p {
+    color: var(--light-acc);
+    background-color: var(--main-bg);
+    text-decoration: none;
+}
+
 button, input[type=submit] {
     background-color: var(--sec-acc);
     color: var(--main-fg);
@@ -78,16 +84,6 @@ input[type=text], input[type=number] {
     color: var(--main-fg);
     padding: 0.5ex;
     border: 1px solid var(--light-acc);
-}
-
-a {
-    color: var(--light-acc);
-    background-color: var(--main-bg);
-    text-decoration: none;
-    font-size: 2em;
-    position: absolute;
-    top: 5px;
-    left: 5px;
 }
 
 table {
@@ -130,4 +126,24 @@ tr {
 
 hr.line {
     border: 1px solid var(--bg-acc);
+}
+
+#adminSettings {
+    font-size: 2em;
+    position: absolute;
+    top: 5px;
+    left: 5px;
+}
+
+#twitchLogin, #twitchLoginAdmin {
+    font-size: inherit;
+    padding: 1px;
+}
+
+#twitchLoginAdmin {
+    position: absolute;
+    top: 5px;
+    right: 5px;
+    color: var(--light-acc);
+    background-color: var(--main-bg);
 }
