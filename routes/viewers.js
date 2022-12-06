@@ -21,13 +21,18 @@ router.get('/songs', function (req, res) {
     res.send(globalController.getSongs());
 });
 
-router.post('/songrequest', limiterWrapper, function (req, res) {
+router.post('/songrequest', limiterWrapper, async function (req, res) {
     const twitchRequirement = globalController.getTwitchRequirement();
 
     if (twitchRequirement !== 'none') {
         const userId = req.header('uid'),
-            user = globalController.getTwitchUser(userId),
-            userLevel = user.getTwitchLevel(),
+            user = globalController.getTwitchUser(userId);
+
+        if (!user) {
+            return res.status(401).send('You need to be logged in with Twitch to vote!');
+        }
+
+        const userLevel = await user.getTwitchLevel(),
             neededLevel = globalController.getTwitchRequirement();
 
         if (TwitchLevel[userLevel] < TwitchLevel[globalController.getTwitchRequirement()]) {

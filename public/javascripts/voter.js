@@ -1,18 +1,41 @@
 let selectedPlaylistName, selectedPlaylistButton, selectedRow, selectedSong, statusTimeout,
-    userName = 'unknown';
+    userName = undefined;
 
 document.addEventListener('DOMContentLoaded', function () {
-    let playlistTables = document.getElementsByClassName('songsTable');
+    let playlistTables = document.getElementsByClassName('songsTable'),
+        nameInput = $('#userName')[0];
 
-    playlistTables[0].classList.remove('hidden');
+    if (playlistTables.length) {
+        playlistTables[0].classList.remove('hidden');
+    }
+
     selectedPlaylistButton = document.getElementsByClassName('playlist_btn')[0];
-    selectedPlaylistButton.classList.add('selected');
+    if (selectedPlaylistButton) {
+        selectedPlaylistButton.classList.add('selected');
+    }
 
-    userName = localStorage['name'] ||
-        prompt('Enter your name to send with your requests. You can change it at any time');
+    if (localStorage['sessionStart'] && localStorage['sessionStart'] + 1000 * 60 * 60 * 24 > Date.now()) {
+        userName = localStorage['twitchName'];
+        localStorage['name'] = userName;
+        if (nameInput) {
+            nameInput.disabled = true;
+        }
 
-    localStorage['name'] = userName;
-    $('#userName')[0].value = userName;
+        $('#notLoggedIn').css('display', 'none');
+        $('#loggedIn').css('display', 'block');
+    } else {
+        localStorage['name'] = userName;
+        $('#notLoggedIn').css('display', 'block');
+        $('#loggedIn').css('display', 'none');
+    }
+
+    if (userName && nameInput) {
+        nameInput.value = userName;
+    }
+
+    if (localStorage['twitchName'] && nameInput) {
+        nameInput.disabled = true;
+    }
 
     if (window.songs) {
         selectedPlaylistName = Object.keys(window.songs)[0];
@@ -85,10 +108,21 @@ function sendRequest () {
         return;
     }
 
+    if (!userName) {
+        userName = prompt('You need to enter a name to send requests.')
+
+        if (!userName) {
+            return;
+        }
+
+        $('#userName')[0].value = userName;
+        localStorage['name'] = userName;
+    }
+
     let xhr = new XMLHttpRequest();
     xhr.open('POST', '/songrequest');
     xhr.setRequestHeader('Content-Type', 'application/json');
-    xhr.setRequestHeader('uid', 'varo');
+    xhr.setRequestHeader('uid', localStorage['uid']);
     xhr.onreadystatechange = function () {
         let statusText = document.getElementById('statusText');
 
@@ -97,6 +131,16 @@ function sendRequest () {
             statusText.classList.remove('failure');
             statusText.classList.add('success');
         } else if (xhr.readyState === 4) {
+            if (xhr.responseText === 'You need to be logged in with Twitch to vote!') {
+                $('#notLoggedIn').css('display', 'block');
+                $('#loggedIn').css('display', 'none');
+                $('#userName')[0].disabled = false;
+
+                delete localStorage['uid'];
+                delete localStorage['twitchName'];
+                delete localStorage['sessionStart'];
+            }
+
             statusText.innerText = xhr.responseText;
             statusText.classList.remove('success');
             statusText.classList.add('failure');

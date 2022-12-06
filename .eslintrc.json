@@ -11,7 +11,6 @@
     },
     "globals": {
         "globalController": "writable",
-        "globalPasskey": "writable",
         "globalRatelimiter": "writable",
         "$": "readonly"
     },

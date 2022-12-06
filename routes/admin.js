@@ -14,7 +14,6 @@ router.get('/', function(req, res) {
 
     res.render('admin', {
         isAdmin: true,
-        loggedIn: true, //TODO: Get from Controller, as String so Name can be shown
         mobile: ('mobile' in req.query),
         playlists: globalController.getSongs(),
         requestedOrPlayedSongs: requestedOrPlayedSongs
@@ -27,9 +26,9 @@ router.get('/', function(req, res) {
 router.get('/settings', function (req, res) {
     res.render('settings', {
         mobile: ('mobile' in req.query),
-        loggedIn: false, //TODO: Get from Controller
         playlists: globalController.getSongs(),
-        ratelimit: globalController.ratelimit
+        ratelimit: globalController.ratelimit,
+        twitchRequirement: globalController.twitchRequirement
     });
 });
 
@@ -101,11 +100,11 @@ router.post('/setTwitchRequirement', function (req, res) {
         return;
     }
 
-    if (!req.body.TwitchRequirement) {
+    if (!req.body.twitchRequirement) {
         return res.status(400).send('No Twitch requirement supplied.');
     }
 
-    const newRequirement = req.body.TwitchRequirement;
+    const newRequirement = req.body.twitchRequirement;
 
     if (!(newRequirement in TwitchLevel)) {
         return res.status(400).send('Unknown Twitch requirement.');
@@ -164,16 +163,32 @@ router.post('/deletesavedsongs', function (req, res) {
 });
 
 /**
- * Checks if the request comes from a whitelisted IP. If not, it sends an appropriate response.
+ * Checks whether the request comes from the signed in streamer. Responds with an error page if not.
  *
  * @param req The request
  * @param res The response
  * @return {boolean} Whether the request is authorized
  */
 function checkAuthorization(req, res) {
-    const userId = req.header('uid');
+    const userId = req.header('uid'),
+        streamer = globalController.getStreamer();
 
-    if (!userId === globalController.getStreamer().getUserId()) {
+    if (!streamer) {
+        if (req.method === 'GET') {
+            res.status(409).render('error', {
+                message: '409: Conflict',
+                error: {
+                    status: 'No streamer logged in.',
+                    stack: 'Streamer needs to be logged in.'
+                }
+            });
+        } else {
+            res.status(409).send('No streamer logged in.');
+        }
+        return false;
+    }
+
+    if (!userId === streamer.getUserId()) {
         if (req.method === 'GET') {
             res.status(401).render('error', {
                 message: '401: Unauthorized',

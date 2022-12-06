@@ -6,12 +6,14 @@
     <div id='namewrapper'>
         <input id='userName' type="text" placeholder="Your name here (voluntary)"><br>
         <div>
-            <!--TODO: redirect uri in environment var?-->
-            <!--TODO: spezielle admin weiterleitung-->
-            <!--TODO: Nach login: Namenseingabe sperren-->
-            <button onclick='setUserName()'>Save</button> or <a href=
-                                                                "https://id.twitch.tv/oauth2/authorize?client_id=nvygx79rqqdcgk4wwgj6f7jv6rq1j3&redirect_uri=http://localhost:3000/login&response_type=code"
-                                                                id="twitchLogin">Log in with Twitch</a>
+            <div id='notLoggedIn'>
+                <button onclick='setUserName()'>Save</button> or <a href=
+                                                                    "https://id.twitch.tv/oauth2/authorize?client_id=nvygx79rqqdcgk4wwgj6f7jv6rq1j3&redirect_uri=http://localhost:3000/login&response_type=code"
+                                                                    id="twitchLogin">Log in with Twitch</a>
+            </div>
+            <div id='loggedIn'>
+                Logged in with Twitch!
+            </div>
         </div>
     </div>
     <% } %>

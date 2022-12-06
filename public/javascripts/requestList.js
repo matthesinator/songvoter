@@ -49,12 +49,15 @@ function connectWebsocket (callback) {
         } else if (data.playedSong) {
             markPlayedInTable(data.playedSong, data.uniqueId);
         } else if (data.unauthorized) {
-            localStorage['passkey'] = prompt("Enter correct passkey to continue.");
-            ws.send(JSON.stringify({
-                target: 'authorize',
-                passkey: localStorage['passkey']
-            }));
-            ws.send(data.initialRequest);
+            if (localStorage['uid']) {
+                ws.send(JSON.stringify({
+                    target: 'authorize',
+                    uid: localStorage['uid']
+                }));
+                ws.send(JSON.stringify(data.initialRequest));
+            } else {
+                alert('Please log in with Twitch and try again.');
+            }
         } else if (data === 'reload') {
             location.reload();
         }
@@ -65,11 +68,17 @@ function connectWebsocket (callback) {
         wsErrorCounter = 0;
 
         if (window.location.pathname.includes('admin')) {
-            localStorage['passkey'] = localStorage['passkey'] || prompt("Enter passkey");
-            ws.send(JSON.stringify({
-                target: 'authorize',
-                passkey: localStorage['passkey']
-            }));
+            if (localStorage['sessionStart']) {
+                if (localStorage['sessionStart'] + 1000 * 60 * 60 * 24 > Date.now()) {
+                    // hope that uid is still valid
+                    ws.send(JSON.stringify({
+                        target: 'authorize',
+                        uid: localStorage['uid']
+                    }));
+                } else {
+                    alert('Session is older than a day, log in with Twitch again to be safe');
+                }
+            }
         }
         if (callback) {
             callback(ws);

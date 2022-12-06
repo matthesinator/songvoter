@@ -1,6 +1,6 @@
 module.exports = {
     'none': 0,
-    'User': 1,
-    'Follower': 2,
-    'Subscriber': 3
+    'user': 1,
+    'follower': 2,
+    'subscriber': 3
 };

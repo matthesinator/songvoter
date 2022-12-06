@@ -3,10 +3,10 @@ const axios = require('axios');
 const router = express.Router();
 const TwitchUser = require('../classes/TwitchUser'),
     TwitchStreamer = require('../classes/TwitchStreamer');
-const stream = require("stream");
 
 /**
- * TODO: Comment, Fehlerfall
+ * Reads the code given by Twitch and reads access- and refresh-token from Twitch. Creates a new user with the token,
+ * logging them in.
  */
 router.get('/', async function(req, res) {
     let code = req.query.code,
@@ -15,36 +15,77 @@ router.get('/', async function(req, res) {
     try {
         tokenData = await getTokens(code);
     } catch (error) {
-        return res.redirect('/'); //TODO: Inform user of error
+        return res.status(500).render('error', {
+            message: '500: Internal Server Error',
+            error: {
+                status: 'Something went wrong while trying to authenticate you with Twitch.',
+                stack: error
+            }
+        });
     }
 
     user = new TwitchUser(tokenData.access_token, tokenData.refresh_token);
-    const userId = globalController.addTwitchUser(user);
+    const userId = globalController.addTwitchUser(user),
+        userName = await user.getUserName();
 
-    res.header('uid', userId);
-    res.redirect(303, '/');
+    res.render('loginRedirect', {
+        admin: false,
+        userId: userId,
+        userName: userName
+    });
 });
 
 /**
- * TODO: Comment & Admin functionality
+ * Reads the code given by Twitch and reads access- and refresh-token from Twitch. Creates a new streamer with the
+ * token, logging them in.
  */
 router.get('/admin', async function(req, res) {
-    let code = req.params.code,
+    let code = req.query.code,
         tokenData, streamer;
 
     try {
         tokenData = await getTokens(code);
     } catch (error) {
-        return res.redirect('/admin'); //TODO: Inform user of error
+        return res.status(500).render('error', {
+            message: '500: Internal Server Error',
+            error: {
+                status: 'Something went wrong while trying to authenticate you with Twitch.',
+                stack: error
+            }
+        });
     }
 
-    streamer = new TwitchStreamer(tokenData.access_token, tokenData.refresh_token)
-    const userId = globalController.setStreamer(streamer);
 
-    res.header('uid', userId);
-    res.redirect('/admin');
+    streamer = new TwitchStreamer(tokenData.access_token, tokenData.refresh_token)
+
+    let userId, userName;
+
+    try {
+        userId = globalController.setStreamer(streamer);
+    } catch (err) {
+        return res.status(500).render('error', {
+            message: '401: Unauthorized',
+            error: {
+                status: 'A streamer is already signed in.',
+                stack: err
+            }
+        });
+    }
+
+    userName = await streamer.getUserName();
+
+    res.render('loginRedirect', {
+        admin: true,
+        userId: userId,
+        userName: userName
+    });
 });
 
+/**
+ * Uses the code supplied by Twitch to fetch the OAuth tokens for the user.
+ * @param code The authorization code supplied by Twitch
+ * @returns {Promise<any>} A promise which will resolve with the OAuth tokens
+ */
 async function getTokens(code) {
     let response;
 

@@ -4,15 +4,22 @@ exports.createWebsocketServer = function (server) {
     const wss = new Server({ server });
 
     wss.on('connection', function (ws) {
-        ws.send('connected');
+        ws.send('{"connected": true}');
         globalController.addViewer(ws);
 
         ws.on('message', function (message) {
+            let streamer
+
             message = JSON.parse(message);
 
             switch (message.target) {
             case 'authorize':
-                ws.authorized = message.passkey === globalPasskey;
+                streamer = globalController.getStreamer();
+                if (streamer) {
+                    ws.authorized = message.uid === streamer.getUserId();
+                } else {
+                    ws.authorized = false;
+                }
                 break;
             case 'played':
                 if (!ws.authorized) {

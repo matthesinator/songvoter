@@ -303,27 +303,54 @@ Controller.prototype.resetRequestsPlayedData = function () {
     this.sendMessageToViewers('reload');
 };
 
+/**
+ * Returns the streamer
+ * @returns streamer The current streamer
+ */
 Controller.prototype.getStreamer = function () {
     return this.streamer;
 };
 
+/**
+ * Sets the streamer as streamer. Creates a userId for them and loads the Twitch interaction level for all viewers that
+ * signed in before the streamer.
+ * @param streamer The streamer
+ * @returns {string} The streamer's uid
+ */
 Controller.prototype.setStreamer = function (streamer) {
-    let userId = `${Date.now()}`;
+    if (this.streamer) {
+        throw new Error("Streamer already signed in");
+    }
+
+    let userId = `u-${Date.now()}`;
 
     while (userId in this.twitchUsers) {
-        userId = `${Date.now()}`;
+        userId = `u-${Date.now()}`;
     }
     streamer.setUserId(userId);
     this.streamer = streamer;
 
+    this.streamer.afterPromisesLoaded(() => {
+        Object.values(this.twitchUsers).forEach(user => {
+            user.loadChannelInteraction();
+        });
+    }).catch(err => {
+        console.error('How could this happen? We\'re smarter than this: ', err);
+    });
+
     return userId;
 };
 
+/**
+ * Adds the user to the list of users. Creates a userId for them.
+ * @param user The user
+ * @returns {string} The user's uid
+ */
 Controller.prototype.addTwitchUser = function (user) {
-    let userId = `${Date.now()}`;
+    let userId = `u-${Date.now()}`;
 
     while (userId in this.twitchUsers) {
-        userId = `${Date.now()}`;
+        userId = `u-${Date.now()}`;
     }
     user.setUserId(userId);
     this.twitchUsers[userId] = user;
@@ -331,7 +358,16 @@ Controller.prototype.addTwitchUser = function (user) {
     return userId;
 };
 
+/**
+ * Fetches a user by their id.
+ * @param userId The id
+ * @returns TwitchUser The user with the given id
+ */
 Controller.prototype.getTwitchUser = function (userId) {
+    if (userId === this.streamer.getUserId()) {
+        return this.streamer;
+    }
+
     return this.twitchUsers[userId]
 };
 

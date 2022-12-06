@@ -69,7 +69,7 @@ function blockPlaylist(playlist, button) {
     $.ajax({
         data: { playlist: playlist },
         type: "POST",
-        headers: { 'auth': localStorage['passkey'] },
+        headers: { 'uid': localStorage['uid'] },
         url: '/admin/blockplaylist',
         success: () => {
             if (button.classList.contains('failure')) {

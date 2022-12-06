@@ -1,6 +1,7 @@
-<% if (!loggedIn) { %>
+<div id="notLoggedIn">
     <a href="https://id.twitch.tv/oauth2/authorize?client_id=nvygx79rqqdcgk4wwgj6f7jv6rq1j3&redirect_uri=http://localhost:3000/login/admin&response_type=code&scope=channel%3Aread%3Asubscriptions"
        id="twitchLoginAdmin">Log in with Twitch</a>
-<% } else { %>
+</div>
+<div id="loggedIn">
     <div id="twitchLoginAdmin">Logged in!</div>
-<% } %>
+</div>

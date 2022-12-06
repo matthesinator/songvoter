@@ -4,10 +4,10 @@ class TwitchUser {
     constructor(access_token, refresh_token) {
         this.accessToken = access_token;
         this.refreshToken = refresh_token;
-        this.userId = undefined;
+        this.twitchUserId = undefined;
+        this.appUserId = undefined;
         this.name = undefined;
         this.validated = false;
-        this.disconnected = false;
         this.isFollowing = undefined;
         this.isSubscribed = undefined;
         this.validationPromise = undefined;
@@ -27,6 +27,8 @@ class TwitchUser {
         }).then(res => {
             this.validated = true;
             this.name = res.data.login;
+            this.twitchUserId = res.data.user_id;
+            this.clientId = res.data.client_id;
             this.loadChannelInteraction();
         }).catch(err => {
             this.validated = false;
@@ -48,20 +50,23 @@ class TwitchUser {
         }).then(res => {
             this.accessToken = res.data.access_token;
             this.refreshToken = res.data.refresh_token;
-        }).catch(err => {
+        }).catch(() => {
             console.warn(`user ${this.name} likely disconnected, removing...`);
             clearInterval(this.validateInterval);
-            this.disconnected = true;
         });
     }
 
     loadChannelInteraction() {
-        let adminId = globalController.adminId;
+        const streamer = globalController.getStreamer();
 
-        adminId = 599015888;
+        if (!streamer) {
+            return;
+        }
+
+        const streamerId = streamer.getTwitchUserId();
 
         this.isFollowingPromise =
-            axios.get(`https://api.twitch.tv/helix/users/follows?from_id=${this.userId}&to_id=${adminId}`, {
+            axios.get(`https://api.twitch.tv/helix/users/follows?from_id=${this.twitchUserId}&to_id=${streamerId}`, {
                 headers: {
                     Authorization: `Bearer ${this.accessToken}`,
                     'Client-Id': this.clientId
@@ -70,38 +75,52 @@ class TwitchUser {
                 this.isFollowing = res.data.total === 1;
                 console.log(res.data);
             }).catch(err => {
-                console.log(err.response.data)
+                console.log(`Couldn't load following state: ${err.response.data.message}`);
             });
 
         this.isSubscribedPromise =
-            globalController.getStreamer().checkSubscriptionForUser(this.userId).then((res) => {
-                this.isFollowing = res.data.total === 1;
+            streamer.checkSubscriptionForUser(this.twitchUserId).then((res) => {
+                this.isSubscribed = res.data.data.length >= 1;
                 console.log(res.data);
             }).catch(err => {
-                console.log(err.response.data)
+                console.log(`Couldn't load subscribed state: ${err.response.data.message}`);
             });
     }
 
     getUserId() {
-        return this.userId;
+        return this.appUserId;
     }
 
     setUserId(userId) {
-        this.userId = userId;
+        this.appUserId = userId;
+    }
+
+    getTwitchUserId() {
+        return this.twitchUserId;
+    }
+
+    async getUserName() {
+        await this.validationPromise;
+        return this.name;
     }
 
     async getTwitchLevel() {
         await Promise.all([this.validationPromise, this.isFollowingPromise, this.isSubscribedPromise]);
 
         if (this.isSubscribed) {
-            return 'Subscriber';
+            return 'subscriber';
         } else if (this.isFollowing) {
-            return 'Follower';
+            return 'follower';
         } else if (this.validated) {
-            return 'User';
+            return 'user';
         } else {
             return 'none';
         }
+    }
+
+    async afterPromisesLoaded(callback) {
+        await Promise.all([this.validationPromise, this.isFollowingPromise, this.isSubscribedPromise]);
+        return callback();
     }
 }
 

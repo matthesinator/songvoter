@@ -1,6 +1,14 @@
 let resultTimer, playlistsToDelete = [], playlistsBlocked = [], playlistsRenamed = {};
 
 $(document).ready(function () {
+    if (localStorage['sessionStart'] && localStorage['sessionStart'] + 1000 * 60 * 60 * 24 > Date.now()) {
+        $('#notLoggedIn').css('display', 'none');
+        $('#loggedIn').css('display', 'block');
+    } else {
+        $('#notLoggedIn').css('display', 'block');
+        $('#loggedIn').css('display', 'none');
+    }
+
     $("#submitBtn").click(function (event) {
         event.preventDefault();
         let form = $('#fileUploadForm')[0],
@@ -68,6 +76,14 @@ $(document).ready(function () {
         });
     });
 
+    $('#confirmInteractionLevelBtn').click(() => {
+        let newRequirement = $('#interactionLevelSelect')[0].value;
+
+        sendRequest("/admin/setTwitchRequirement", {
+            data: {twitchRequirement: newRequirement}
+        });
+    });
+
     $('#confirmRatelimitBtn').click(() => {
         let timeframe = $('#ratelimit')[0].value;
 
@@ -78,10 +94,6 @@ $(document).ready(function () {
 
     $('#readBtn').click(() => {
         sendRequest("/admin/readsavedsongs");
-    });
-
-    $('#setPasskeyBtn').click(() => {
-        localStorage['passkey'] = prompt("Enter passkey");
     });
 
     let deleteButton = $('#deleteBtn');
@@ -195,7 +207,7 @@ function sendRequest (url, additionalParams, successCallback) {
     let ajaxSettings = Object.assign({
         type: "POST",
         headers: {
-            'auth': localStorage['passkey']
+            'uid': localStorage['uid']
         },
         url: url,
         success: (data) => {
@@ -205,8 +217,19 @@ function sendRequest (url, additionalParams, successCallback) {
             }
         },
         error: (err) => {
-            console.log("ERROR : ", err);
-            showResult(err.responseText, false);
+            if (err.responseText === 'No streamer logged in.') {
+                $('#notLoggedIn').css('display', 'block');
+                $('#loggedIn').css('display', 'none');
+
+                delete localStorage['uid'];
+                delete localStorage['twitchName'];
+                delete localStorage['sessionStart'];
+
+                alert('Session seems to have ended, please log in again.')
+            } else {
+                console.log("ERROR : ", err);
+                showResult(err.responseText, false);
+            }
         }
     }, additionalParams);
 

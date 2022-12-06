@@ -11,7 +11,6 @@ if (process.env.NODE_ENV !== 'production') {
 }
 
 global.globalController = require('./tools/controller');
-global.globalPasskey = 'z3l3ct3r';
 global.globalRatelimiter = rateLimit({
     windowMs: 5 * 60 * 1000,
     max: 1,
