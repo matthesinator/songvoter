@@ -95,7 +95,7 @@ async function getTokens(code) {
             client_id: process.env.CLIENT_ID,
             client_secret: process.env.CLIENT_SECRET,
             grant_type: 'authorization_code',
-            redirect_uri: `${process.env.REDIRECT_URI}/login`
+            redirect_uri: `${process.env.REDIRECT_URI}`
         });
     } catch (err) {
         console.error('Network error');
