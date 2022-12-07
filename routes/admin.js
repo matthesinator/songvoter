@@ -15,7 +15,7 @@ router.get('/', function(req, res) {
     res.render('admin', {
         isAdmin: true,
         mobile: ('mobile' in req.query),
-        redirectUri: `${process.env.REDIRECT_URI}/admin`,
+        redirectUri: `${process.env.APP_URI}/login/admin`,
         playlists: globalController.getSongs(),
         requestedOrPlayedSongs: requestedOrPlayedSongs
     });
@@ -28,7 +28,7 @@ router.get('/settings', function (req, res) {
     res.render('settings', {
         mobile: ('mobile' in req.query),
         playlists: globalController.getSongs(),
-        redirectUri: `${process.env.REDIRECT_URI}/admin`,
+        redirectUri: `${process.env.APP_URI}/login/admin`,
         ratelimit: globalController.ratelimit,
         twitchRequirement: globalController.twitchRequirement
     });

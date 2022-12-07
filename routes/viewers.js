@@ -11,7 +11,7 @@ router.get('/', function(req, res) {
 
     res.render('index', {
         isAdmin: false,
-        redirectUri: process.env.REDIRECT_URI,
+        redirectUri: `${process.env.APP_URI}/login`,
         mobile: ('mobile' in req.query),
         playlists: globalController.getSongs(),
         requestedOrPlayedSongs: requestedOrPlayedSongs
